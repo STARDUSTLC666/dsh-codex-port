@@ -1,6 +1,8 @@
 [English](README.en.md)
 
-`# dsh-codex-port
+# dsh-codex-port
+
+> **Codex 全家桶，一条命令进 DSH**：实测 186 插件、583 技能、移植 577 个 0 失败。
 
 ![npm version](https://img.shields.io/npm/v/dsh-codex-port?label=npm&color=blue) ![npm downloads](https://img.shields.io/npm/dm/dsh-codex-port) ![license](https://img.shields.io/npm/l/dsh-codex-port) ![stars](https://img.shields.io/github/stars/STARDUSTLC666/dsh-codex-port?style=social)
 
@@ -51,6 +53,22 @@ codex_status {}                        # 还有多少没移植
 
 移植后 DSH 技能目录立即可用，agent 按技能描述自动触发。
 
+## 跨平台使用
+
+`targetDir` 不限于 DSH：指向任何支持 Agent Skills（SKILL.md）格式的 agent 技能目录，即可把 Codex 全家桶移植给它们：
+
+| Agent | 建议 targetDir |
+| :-- | :-- |
+| DSH | `~/.dsh/skills`（默认）|
+| Claude Code | `~/.claude/skills/` |
+| Cursor | `.cursor/skills/` |
+| Gemini CLI | `~/.gemini/skills/` |
+
+```text
+codex_port { targetDir: ~/.claude/skills }
+```
+
+
 ## 移植规则
 
 - **frontmatter 转换**：Codex 的 `name/description/metadata` → DSH 的 `name/description/compatibility/allowed-tools`，多行描述完整保留
@@ -69,4 +87,5 @@ pnpm test       # 构建 + 33 个测试
 ## License
 
 MIT
+
 
