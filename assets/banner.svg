@@ -1,0 +1,23 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='1280' height='640' viewBox='0 0 1280 640'>
+  <defs>
+    <linearGradient id='bg' x1='0' y1='0' x2='1' y2='1'>
+      <stop offset='0%' stop-color='#0d1117'/>
+      <stop offset='100%' stop-color='#161b22'/>
+    </linearGradient>
+    <linearGradient id='accent' x1='0' y1='0' x2='1' y2='1'>
+      <stop offset='0%' stop-color='#6e40c9'/>
+      <stop offset='100%' stop-color='#8957e5'/>
+    </linearGradient>
+  </defs>
+  <rect width='1280' height='640' fill='url(#bg)'/>
+  <g transform='translate(160,190)'>
+    <rect x='0' y='0' width='260' height='260' rx='58' fill='url(#accent)'/>
+    <path d='M58 210 L58 50 L202 50' fill='none' stroke='#ffffff' stroke-width='20' stroke-linecap='round' stroke-linejoin='round'/>
+    <path d='M90 150 L170 150 M90 110 L140 110' stroke='#ffffff' stroke-width='16' stroke-linecap='round' opacity='0.9'/>
+    <circle cx='66' cy='66' r='10' fill='#ffffff'/>
+    <circle cx='194' cy='66' r='10' fill='#ffffff'/>
+  </g>
+  <text x='470' y='285' font-family='Segoe UI, Microsoft YaHei, sans-serif' font-size='84' font-weight='700' fill='#ffffff'>dsh-codex-port</text>
+  <text x='474' y='355' font-family='Segoe UI, Microsoft YaHei, sans-serif' font-size='32' fill='#9db4d0'>Move the whole Codex plugin family into DSH</text>
+  <path d='M0 560 q160 -60 320 0 t320 0 t320 0 t320 0' fill='none' stroke='#8957e5' stroke-width='10' stroke-linecap='round' opacity='0.3'/>
+</svg>

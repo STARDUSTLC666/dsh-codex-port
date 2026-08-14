@@ -1,0 +1,16 @@
+# dsh-codex-port 组合包补丁：把 Codex 技能移植工具插件行插入 profile。
+# 本补丁按 id 覆盖；用户应在自己 profile 的 cordis.patch.yml 里覆盖本行的整个
+# config（见 README 的配置示例）。配置缺失时插件仍会加载，扫描默认 ~/.codex。
+#
+# 示例（用户 profile 的 cordis.patch.yml）：
+#   - id: codex-port
+#     name: 'dsh-codex-port'
+#     config:
+#       # codexHome: C:\Users\you\.codex       # Codex 家目录（默认 ~/.codex）
+#       # targetDir: C:\Users\you\.dsh\skills  # 目标技能目录（默认 <DSH_HOME>/skills）
+#       # overwrite: true                         # 覆盖同名技能（默认跳过）
+#
+- insert:
+    - id: codex-port
+      name: 'dsh-codex-port'
+      config: {}
