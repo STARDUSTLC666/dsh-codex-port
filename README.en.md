@@ -2,6 +2,8 @@
 
 # dsh-codex-port
 
+[![Awesome DSH Plugin](https://awesome-dsh-plugin.com/badge.svg)](https://awesome-dsh-plugin.com)
+
 Move the whole **official Codex plugin family** into DSH: scan `~/.codex` unpacked plugins and plugin caches, then batch-port their skills into DSH skills (automatic frontmatter conversion, codex-only files stripped, name sanitization, idempotent skips).
 
 > Measured on a real machine: 186 official Codex plugins, 583 skills — one port run moved 577 successfully, 0 failures.

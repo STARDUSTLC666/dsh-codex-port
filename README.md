@@ -6,6 +6,8 @@
 
 ![npm version](https://img.shields.io/npm/v/dsh-codex-port?label=npm&color=blue) ![npm downloads](https://img.shields.io/npm/dm/dsh-codex-port) ![license](https://img.shields.io/npm/l/dsh-codex-port) ![stars](https://img.shields.io/github/stars/STARDUSTLC666/dsh-codex-port?style=social)
 
+[![Awesome DSH Plugin](https://awesome-dsh-plugin.com/badge.svg)](https://awesome-dsh-plugin.com)
+
 
 把 **Codex 官方插件全家桶**一键搬进 DSH：扫描 `~/.codex` 里的解包插件与插件缓存，把它们的技能批量移植为 DSH 技能（frontmatter 自动转换、codex 专属文件剔除、名称清洗、幂等跳过）。
 
