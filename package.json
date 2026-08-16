@@ -37,7 +37,8 @@
     "plugin",
     "codex",
     "skills",
-    "migration"
+    "migration",
+    "dsh-plugin"
   ],
   "license": "MIT",
   "engines": {
