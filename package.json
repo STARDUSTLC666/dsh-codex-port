@@ -1,6 +1,6 @@
 {
   "name": "dsh-codex-port",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "DSH 技能移植工具插件：把 ~/.codex 里的 Codex 官方插件（170+ 个）一键移植为 DSH 技能（codex_list / codex_port / codex_status），frontmatter 自动转换、名称清洗、幂等跳过。",
   "type": "module",
   "main": "lib/index.js",
