@@ -35,6 +35,24 @@ function isDir(path: string): boolean {
   try { return statSync(path).isDirectory() } catch { return false }
 }
 
+/** 语义化版本比较：按数字段逐段比较，忽略 v 前缀与 pre-release 后缀。 */
+function isNewerVersion(a: string, b: string): boolean {
+  const parse = (v: string): number[] => {
+    const match = /v?(\d+(?:\.\d+)*)/.exec(v)
+    if (match === null) return []
+    return match[1].split('.').map((n) => Number(n))
+  }
+  const pa = parse(a)
+  const pb = parse(b)
+  const len = Math.max(pa.length, pb.length)
+  for (let i = 0; i < len; i += 1) {
+    const x = pa[i] ?? 0
+    const y = pb[i] ?? 0
+    if (x !== y) return x > y
+  }
+  return false
+}
+
 /** 读取 plugin.json；缺失或非法返回 null。 */
 function readPluginManifest(pluginDir: string): { name: string; version: string; description: string; homepage: string; license: string } | null {
   const manifestPath = join(pluginDir, '.codex-plugin', 'plugin.json')
@@ -130,7 +148,7 @@ export function discoverPlugins(codexHome: string): CodexPluginInfo[] {
       seen.add(key + ':' + candidate.dir)
     } else {
       const betterPriority = candidate.priority > (candidates.find((c) => c.dir === existing.sourceDir)?.priority ?? -1)
-      const newerVersion = manifest.version !== 'unknown' && manifest.version !== existing.version && manifest.version > existing.version
+      const newerVersion = manifest.version !== 'unknown' && manifest.version !== existing.version && isNewerVersion(manifest.version, existing.version)
       if (betterPriority || newerVersion) found.set(key, info)
     }
   }

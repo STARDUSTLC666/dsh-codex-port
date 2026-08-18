@@ -12,6 +12,7 @@ import { resolveConfig, type CodexPortConfig } from './config.js'
 import { buildCodexPortTools, type CodexPortToolDefinition } from './tools.js'
 
 /** cordis 服务注入：apply 里要用 ctx.tools，必须显式声明。 */
+export const name = 'codex-port'
 export const inject = ['tools']
 
 /** 插件所需的最小 ctx 面。 */

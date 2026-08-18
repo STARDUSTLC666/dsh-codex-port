@@ -25,6 +25,7 @@ function copyTree(source: string, target: string): number {
   mkdirSync(target, { recursive: true })
   let count = 0
   for (const entry of readdirSync(source, { withFileTypes: true })) {
+    if (entry.isSymbolicLink()) continue
     if (entry.isDirectory() && EXCLUDED_DIRS.has(entry.name)) continue
     const from = join(source, entry.name)
     const to = join(target, entry.name)
