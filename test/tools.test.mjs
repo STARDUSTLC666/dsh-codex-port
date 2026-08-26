@@ -10,9 +10,9 @@ const home = buildFixtureCodexHome()
 const target = mkdtempSync(join(tmpdir(), 'dsh-codex-port-tools-'))
 const cfg = resolveConfig({ codexHome: home, targetDir: target })
 
-test('构建 3 个工具且名字正确', () => {
+test('构建 4 个工具且名字正确', () => {
   const names = buildCodexPortTools(cfg).map((t) => t.name).sort()
-  assert.deepEqual(names, ['codex_list', 'codex_port', 'codex_status'])
+  assert.deepEqual(names, ['codex_health', 'codex_list', 'codex_port', 'codex_status'])
 })
 
 test('每个工具 parameters 是 object JSON Schema，输出含 render', () => {

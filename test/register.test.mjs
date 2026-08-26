@@ -27,22 +27,22 @@ test('inject 只声明 tools', () => {
   assert.deepEqual(inject, ['tools'])
 })
 
-test('apply 注册 3 个工具', () => {
+test('apply 注册 4 个工具', () => {
   const { ctx, registered } = makeFakeCtx()
   apply(ctx, {})
-  assert.equal(registered.length, 3)
+  assert.equal(registered.length, 4)
 })
 
 test('apply 配置非法不抛', () => {
   const { ctx, registered } = makeFakeCtx()
   assert.doesNotThrow(() => apply(ctx, { overwrite: 'yes' }))
-  assert.equal(registered.length, 3)
+  assert.equal(registered.length, 4)
 })
 
 test('dispose 卸载全部工具', () => {
   const { ctx, registered, listeners } = makeFakeCtx()
   apply(ctx, {})
-  assert.equal(registered.length, 3)
+  assert.equal(registered.length, 4)
   for (const listener of listeners.dispose ?? []) listener()
   assert.equal(registered.length, 0)
 })

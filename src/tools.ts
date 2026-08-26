@@ -283,5 +283,43 @@ export function buildCodexPortTools(config: ResolvedCodexPortConfig): CodexPortT
     },
   }
 
-  return [codexList, codexPort, codexStatus]
+  const codexHealth: CodexPortToolDefinition = {
+    name: 'codex_health',
+    description: 'dsh-codex-port 自检：检查 Codex 主目录（~/.codex 或自定义）是否存在、插件目录是否可见（不执行任何移植）。遇到问题时先运行本工具定位。',
+    parameters: compileParameters({
+      codexHome: { type: 'string', description: 'Codex 主目录（可选，缺省用配置或 ~/.codex）。' },
+    }),
+    output: {
+      schema: { type: 'object', additionalProperties: true },
+      render: (_args: unknown, value: unknown) => {
+        const rec = asRecord(value)
+        const checks = Array.isArray(rec.checks) ? rec.checks : []
+        const lines = ['dsh-codex-port 自检' + (rec.ok === true ? '：正常。' : '：发现问题。')]
+        for (const item of checks) {
+          const c = asRecord(item)
+          lines.push('- ' + c.name + '：' + (c.ok === true ? '✅ ' + String(c.detail ?? '') : '❌ ' + String(c.detail ?? '')))
+        }
+        return [{ type: 'text', text: lines.join('\n') }]
+      },
+    },
+    async execute(rawArgs: unknown) {
+      const args = asRecord(rawArgs)
+      const home = optionalString(args, 'codexHome') ?? config.codexHome
+      const checks: Array<Record<string, unknown>> = []
+      try {
+        assertCodexHome(home)
+        checks.push({ name: 'Codex 主目录', ok: true, detail: home })
+      } catch (error) {
+        checks.push({ name: 'Codex 主目录', ok: false, detail: error instanceof Error ? error.message : String(error) })
+        return { ok: false, plugin: 'dsh-codex-port', codexHome: home, checks }
+      }
+      let ok = true
+      const pluginsOk = existsSync(home + '/plugins')
+      checks.push({ name: '插件目录', ok: pluginsOk, detail: pluginsOk ? home + '/plugins' : 'plugins/ 不存在（Codex 尚未安装任何插件）' })
+      if (!pluginsOk) ok = false
+      return { ok, plugin: 'dsh-codex-port', codexHome: home, checks }
+    },
+  }
+
+  return [codexList, codexPort, codexStatus, codexHealth]
 }
