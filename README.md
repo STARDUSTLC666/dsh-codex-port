@@ -13,6 +13,10 @@
 
 > 本机实测：186 个 Codex 官方插件、583 个技能，一次移植 577 个成功、0 失败。
 
+## 兼容性
+
+在 `@deepseek-ai/dsh@0.1.1-rc.2` 上验证（2026-08-26）。遵循 cordis 组合包补丁模型（`cordis.patch.yml` + `dsh.bundle.patch`），运行时不 import 任何 `@deepseek-ai/*` 内部模块。
+
 ## 安装
 
 ```bash
@@ -20,6 +24,15 @@ dsh plugin --profile web add dsh-codex-port
 ```
 
 需要本机装有 Codex CLI（`~/.codex` 目录存在即可）。
+
+## 卸载
+
+```bash
+dsh plugin --profile web remove dsh-codex-port
+```
+
+卸载后重启 Web 服务。如需彻底清理，可再手动删除自己 profile `cordis.patch.yml` 中覆盖的插件行。
+
 
 ## 配置
 
@@ -89,5 +102,3 @@ pnpm test       # 构建 + 33 个测试
 ## License
 
 MIT
-
-

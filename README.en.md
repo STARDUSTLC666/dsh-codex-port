@@ -8,6 +8,10 @@ Move the whole **official Codex plugin family** into DSH: scan `~/.codex` unpack
 
 > Measured on a real machine: 186 official Codex plugins, 583 skills — one port run moved 577 successfully, 0 failures.
 
+## Compatibility
+
+Verified against `@deepseek-ai/dsh@0.1.1-rc.2` on 2026-08-26. Built for the cordis patch-bundle plugin model (`cordis.patch.yml` + `dsh.bundle.patch`). No runtime imports of `@deepseek-ai/*` internals.
+
 ## Installation
 
 ```bash
@@ -15,6 +19,15 @@ dsh plugin --profile web add dsh-codex-port
 ```
 
 Requires the Codex CLI to be installed (the `~/.codex` directory must exist).
+
+## Uninstall
+
+```bash
+dsh plugin --profile web remove dsh-codex-port
+```
+
+Then restart the web service. To clean up fully, also remove the plugin entry from your profile `cordis.patch.yml` if you overrode it.
+
 
 ## Configuration
 
