@@ -1,5 +1,7 @@
 [中文](README.md)
 
+![npm](https://img.shields.io/npm/v/dsh-codex-port) ![downloads](https://img.shields.io/npm/dm/dsh-codex-port) ![license](https://img.shields.io/github/license/STARDUSTLC666/dsh-codex-port) ![stars](https://img.shields.io/github/stars/STARDUSTLC666/dsh-codex-port?style=social)
+
 # dsh-codex-port
 
 [![Awesome DSH Plugin](https://awesome-dsh-plugin.com/badge.svg)](https://awesome-dsh-plugin.com)
