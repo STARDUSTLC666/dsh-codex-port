@@ -26,5 +26,5 @@ test('cordis.patch.yml 插入行名为 dsh-codex-port', () => {
 test('名称与版本', () => {
   const pkg = require('../package.json')
   assert.equal(pkg.name, 'dsh-codex-port')
-  assert.match(pkg.version, /^\d+\.\d+\.\d+$/)
+  assert.equal(pkg.version, '0.2.0')
 })
