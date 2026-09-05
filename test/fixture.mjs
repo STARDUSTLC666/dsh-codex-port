@@ -1,10 +1,26 @@
 /** 构造临时 Codex 家目录 fixture：解包插件 + 缓存插件 + 噪音目录。 */
-import { mkdirSync, writeFileSync, mkdtempSync } from 'node:fs'
-import { tmpdir } from 'node:os'
-import { join } from 'node:path'
+import { mkdirSync, writeFileSync, mkdtempSync, realpathSync, rmSync, lstatSync } from 'node:fs'
+import { join, dirname, resolve, relative, isAbsolute, sep } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+export const testRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../../.harness-validation/codex-port-tests')
+
+export function makeTestDir(prefix) {
+  mkdirSync(testRoot, { recursive: true })
+  if (lstatSync(testRoot).isSymbolicLink() || realpathSync(testRoot) !== testRoot) throw new Error('Test root must be a real workspace directory')
+  return mkdtempSync(join(testRoot, prefix))
+}
+
+export function removeTestDir(directory) {
+  const absolute = resolve(directory)
+  const child = relative(testRoot, absolute)
+  if (!child || child === '..' || child.startsWith('..' + sep) || isAbsolute(child)
+    || lstatSync(absolute).isSymbolicLink() || realpathSync(absolute) !== absolute) throw new Error('Refusing cleanup outside the workspace test root')
+  rmSync(absolute, { recursive: true, force: true })
+}
 
 export function buildFixtureCodexHome() {
-  const home = mkdtempSync(join(tmpdir(), 'dsh-codex-port-fix-'))
+  const home = makeTestDir('dsh-codex-port-fix-')
 
   const unpacked = join(home, '.tmp', 'plugins', 'plugins', 'remotion-fixture')
   mkdirSync(join(unpacked, '.codex-plugin'), { recursive: true })

@@ -1,13 +1,12 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { existsSync, readFileSync, rmSync, mkdtempSync, mkdirSync, writeFileSync } from 'node:fs'
-import { tmpdir } from 'node:os'
+import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { discoverPlugins, portSkill } from '../lib/index.js'
-import { buildFixtureCodexHome } from './fixture.mjs'
+import { buildFixtureCodexHome, makeTestDir, removeTestDir } from './fixture.mjs'
 
 const home = buildFixtureCodexHome()
-const target = mkdtempSync(join(tmpdir(), 'dsh-codex-port-tgt-'))
+const target = makeTestDir('dsh-codex-port-tgt-')
 
 test('portSkill：拷贝 + 转换 + 剔除 agents', () => {
   const plugins = discoverPlugins(home)
@@ -52,4 +51,4 @@ test('portSkill：非法技能名标记 failed', () => {
   assert.equal(result.status, 'failed')
 })
 
-test('cleanup', () => { rmSync(home, { recursive: true, force: true }); rmSync(target, { recursive: true, force: true }) })
+test('cleanup', () => { removeTestDir(home); removeTestDir(target) })

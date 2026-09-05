@@ -1,13 +1,12 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { existsSync, rmSync, mkdtempSync } from 'node:fs'
-import { tmpdir } from 'node:os'
+import { existsSync } from 'node:fs'
 import { join } from 'node:path'
 import { buildCodexPortTools, resolveConfig } from '../lib/index.js'
-import { buildFixtureCodexHome } from './fixture.mjs'
+import { buildFixtureCodexHome, makeTestDir, removeTestDir } from './fixture.mjs'
 
 const home = buildFixtureCodexHome()
-const target = mkdtempSync(join(tmpdir(), 'dsh-codex-port-tools-'))
+const target = makeTestDir('dsh-codex-port-tools-')
 const cfg = resolveConfig({ codexHome: home, targetDir: target })
 
 test('构建 4 个工具且名字正确', () => {
@@ -56,12 +55,12 @@ test('codex_port：再次执行全部跳过', async () => {
 
 test('codex_port：skills 过滤 + targetDir 覆盖 + overwrite', async () => {
   const port = buildCodexPortTools(cfg).find((t) => t.name === 'codex_port')
-  const other = mkdtempSync(join(tmpdir(), 'dsh-codex-port-other-'))
+  const other = makeTestDir('dsh-codex-port-other-')
   const value = await port.execute({ skills: ['gh-tools'], targetDir: other, overwrite: true })
   assert.equal(value.counts.ported, 1)
   assert.equal(value.targetDir, other)
   assert.ok(existsSync(join(other, 'gh-tools', 'SKILL.md')))
-  rmSync(other, { recursive: true, force: true })
+  removeTestDir(other)
 })
 
 test('codex_status：已移植统计', async () => {
@@ -79,4 +78,4 @@ test('execute 返回值可 JSON 序列化', async () => {
   assert.deepEqual(JSON.parse(JSON.stringify(value)), value)
 })
 
-test('cleanup', () => { rmSync(home, { recursive: true, force: true }); rmSync(target, { recursive: true, force: true }) })
+test('cleanup', () => { removeTestDir(home); removeTestDir(target) })

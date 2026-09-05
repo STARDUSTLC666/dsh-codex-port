@@ -1,8 +1,7 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { rmSync } from 'node:fs'
 import { discoverPlugins } from '../lib/index.js'
-import { buildFixtureCodexHome } from './fixture.mjs'
+import { buildFixtureCodexHome, removeTestDir } from './fixture.mjs'
 
 const home = buildFixtureCodexHome()
 
@@ -33,4 +32,4 @@ test('缓存目录里的插件也被发现（版本哈希子目录）', () => {
   assert.equal(github.skills[0].skillName, 'gh-tools')
 })
 
-test('cleanup', () => { rmSync(home, { recursive: true, force: true }) })
+test('cleanup', () => { removeTestDir(home) })

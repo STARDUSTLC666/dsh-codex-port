@@ -8,6 +8,7 @@ export interface PortResult {
     files: number;
 }
 /**
- * 移植单个技能到目标目录。
+ * Port one skill without deleting its previous installation. Each rename is a
+ * filesystem operation; the complete replacement is not atomic on Windows.
  */
 export declare function portSkill(skill: CodexSkillSource, plugin: CodexPluginInfo, targetDir: string, overwrite: boolean): PortResult;

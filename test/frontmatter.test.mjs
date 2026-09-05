@@ -1,10 +1,10 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { readFileSync, rmSync } from 'node:fs'
+import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import YAML from 'yaml'
 import { sanitizeSkillName, parseSkillFile, convertSkillFile, toDshFrontmatter } from '../lib/index.js'
-import { buildFixtureCodexHome } from './fixture.mjs'
+import { buildFixtureCodexHome, removeTestDir } from './fixture.mjs'
 
 const home = buildFixtureCodexHome()
 
@@ -62,4 +62,4 @@ test('toDshFrontmatter 输出可解析', () => {
   assert.equal(doc.description, "A: B 'quoted' text")
 })
 
-test('cleanup', () => { rmSync(home, { recursive: true, force: true }) })
+test('cleanup', () => { removeTestDir(home) })

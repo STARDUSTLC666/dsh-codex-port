@@ -70,14 +70,17 @@ Ported skills are immediately usable from the DSH skills directory; the agent tr
 - **Frontmatter conversion**: Codex `name/description/metadata` → DSH `name/description/compatibility/allowed-tools`, multi-line descriptions preserved
 - **Codex-only files stripped**: `agents/*.yaml` and friends stay behind
 - **Name sanitization**: invalid characters become underscores; `..` traversal rejected outright
+- **Host loadability checks**: before replacement, the converted name must follow DSH's lowercase kebab-case grammar, exactly match its target directory, and have a nonempty description. Names with uppercase letters, underscores, dots, or a different sanitized directory name cannot replace an existing skill.
 - **Idempotent**: same-name skills are skipped by default; `overwrite=true` to replace
+- **Recoverable replacement**: copying, conversion, and read-back validation finish inside a unique `.dsh-port-<skill>-*` directory under the target root before the old skill moves to `previous/` and the new skill takes its place. Copy/conversion failures leave the old skill untouched. A failed switch attempts rollback; if rollback also fails, both copies remain and the error includes their recovery location. Content created by another writer is never deleted.
+- **Backups and path checks**: successful replacements retain `previous/` and `recovery.json`, using additional disk space; archive them manually when recovery is no longer needed. No `SKILL.md` sits at the transaction directory's top level, so current DSH one-level skill discovery does not register backups. Overlapping source/target paths, target symlinks/junctions, paths outside the target root, and Windows device names are rejected. Multiple renames are not one atomic Windows transaction; after process or system interruption, inspect `recovery.json` to restore the appropriate directory.
 - **Safe**: pure filesystem operations, zero runtime dependencies (yaml parsing only)
 
 ## Development
 
 ```bash
 pnpm install
-pnpm test       # build + 33 tests
+pnpm test       # build + offline tests; fixtures stay under workspace .harness-validation/codex-port-tests
 ```
 
 ## License
