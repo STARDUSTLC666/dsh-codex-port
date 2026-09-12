@@ -1,6 +1,6 @@
 {
   "name": "dsh-codex-port",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "DSH 技能移植工具插件：把 ~/.codex 里的 Codex 官方插件（170+ 个）一键移植为 DSH 技能（codex_list / codex_port / codex_status），frontmatter 自动转换、名称清洗、幂等跳过。",
   "type": "module",
   "main": "lib/index.js",
@@ -41,7 +41,7 @@
   ],
   "license": "MIT",
   "engines": {
-    "node": ">=22"
+    "node": "^22.19.0 || >=24.0.0"
   },
   "dependencies": {
     "yaml": "^2.9.0"
