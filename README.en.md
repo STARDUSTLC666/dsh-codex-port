@@ -4,6 +4,12 @@
 
 # dsh-codex-port
 
+## 0.2.3 update (2026-09-27)
+
+Resolves the Codex directory from explicit codexHome, then CODEX_HOME, then ~/.codex. Custom and isolated homes can now discover plugin skills.
+
+Validation host: Harness 0.1.7-rc.2 built from official sources, retaining the local tool-scheduler fix. Build and automated checks pass; interactive coverage and external-service limits are recorded in this release round.
+
 [![Awesome DSH Plugin](https://awesome-dsh-plugin.com/badge.svg)](https://awesome-dsh-plugin.com)
 
 Move the whole **official Codex plugin family** into DSH: scan `~/.codex` unpacked plugins and plugin caches, then batch-port their skills into DSH skills (automatic frontmatter conversion, codex-only files stripped, name sanitization, idempotent skips).

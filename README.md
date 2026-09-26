@@ -2,6 +2,12 @@
 
 # dsh-codex-port
 
+## 0.2.3 更新（2026-09-27）
+
+Codex 目录按显式 codexHome、CODEX_HOME、默认 ~/.codex 的顺序解析，修复自定义或隔离目录无法发现插件技能的问题。
+
+验证宿主：官方源码构建的 Harness 0.1.7-rc.2（保留本地工具调度器修复）。构建与自动测试通过；实际操作和外部服务限制见本轮验收记录。
+
 > **Codex 全家桶，一条命令进 DSH**：实测 186 插件、583 技能、移植 577 个 0 失败。
 
 ![npm version](https://img.shields.io/npm/v/dsh-codex-port?label=npm&color=blue) ![npm downloads](https://img.shields.io/npm/dm/dsh-codex-port) ![license](https://img.shields.io/npm/l/dsh-codex-port) ![stars](https://img.shields.io/github/stars/STARDUSTLC666/dsh-codex-port?style=social)

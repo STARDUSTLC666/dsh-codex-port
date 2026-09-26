@@ -32,7 +32,9 @@ export function defaultTargetDir(env: NodeJS.ProcessEnv = process.env): string {
  */
 export function resolveConfig(config: CodexPortConfig | undefined | null): ResolvedCodexPortConfig {
   const cfg = config ?? {}
-  const codexHome = typeof cfg.codexHome === 'string' && cfg.codexHome.trim() !== '' ? cfg.codexHome.trim() : join(homedir(), '.codex')
+  const codexHome = typeof cfg.codexHome === 'string' && cfg.codexHome.trim() !== ''
+    ? cfg.codexHome.trim()
+    : process.env.CODEX_HOME?.trim() || join(homedir(), '.codex')
   const targetDir = typeof cfg.targetDir === 'string' && cfg.targetDir.trim() !== '' ? cfg.targetDir.trim() : defaultTargetDir()
   const overwrite = cfg.overwrite === true
   return { codexHome, targetDir, overwrite }
