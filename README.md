@@ -2,7 +2,7 @@
 
 # dsh-codex-port
 
-## 0.2.3 更新（2026-09-27）
+## 0.2.4 更新（2026-09-27）
 
 Codex 目录按显式 codexHome、CODEX_HOME、默认 ~/.codex 的顺序解析，修复自定义或隔离目录无法发现插件技能的问题。
 
@@ -20,8 +20,6 @@ Codex 目录按显式 codexHome、CODEX_HOME、默认 ~/.codex 的顺序解析�
 > 本机实测：186 个 Codex 官方插件、583 个技能，一次移植 577 个成功、0 失败。
 
 ## 兼容性
-
-已在官方 `@deepseek-ai/dsh@0.1.5-rc.1`、Node `24.16.0` 上验证（2026-09-11）：18 个组件与 Modlens 同载，工具 schema、技能注册及离线只读调用检查通过。采用 `cordis.patch.yml` + `dsh.bundle.patch` 组合包模型。Node 要求与该版本 Harness 一致：22.19 及以上的 22.x，或 24 及以上。外部服务的实际业务操作需按各组件配置单独验证。
 
 ## 安装
 
