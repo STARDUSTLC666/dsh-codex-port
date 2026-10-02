@@ -1,7 +1,7 @@
 {
   "name": "dsh-codex-port",
   "version": "0.2.4",
-  "description": "DSH 技能移植插件：把 Codex 官方技能一键移植为 DSH 技能，frontmatter 自动转换、名称清洗、幂等跳过。",
+  "description": "把本机 Codex 技能转换为 DSH 可使用的技能。",
   "type": "module",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -17,7 +17,9 @@
     "lib",
     "cordis.patch.yml",
     "README.md",
-    "README.en.md"
+    "README.en.md",
+    "docs",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
