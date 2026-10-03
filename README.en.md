@@ -2,6 +2,8 @@
 
 [中文](README.md)
 
+![dsh-codex-port whale girl plugin cover](https://raw.githubusercontent.com/STARDUSTLC666/dsh-codex-port/master/assets/cover-whale-girl.png)
+
 Convert locally installed Codex skills into DSH-compatible skills.
 
 [![npm](https://img.shields.io/npm/v/dsh-codex-port)](https://www.npmjs.com/package/dsh-codex-port) [![downloads](https://img.shields.io/npm/dm/dsh-codex-port)](https://www.npmjs.com/package/dsh-codex-port)

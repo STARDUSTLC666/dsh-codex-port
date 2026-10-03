@@ -2,6 +2,8 @@
 
 [English](README.en.md)
 
+![dsh-codex-port 鲸鱼娘插件封面](https://raw.githubusercontent.com/STARDUSTLC666/dsh-codex-port/master/assets/cover-whale-girl.png)
+
 把本机 Codex 技能转换为 DSH 可使用的技能。
 
 [![npm](https://img.shields.io/npm/v/dsh-codex-port)](https://www.npmjs.com/package/dsh-codex-port) [![downloads](https://img.shields.io/npm/dm/dsh-codex-port)](https://www.npmjs.com/package/dsh-codex-port)
