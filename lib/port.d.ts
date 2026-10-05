@@ -3,7 +3,7 @@ import { type CodexPluginInfo, type CodexSkillSource } from './discover.js';
 export interface PortResult {
     skill: string;
     plugin: string;
-    status: 'ported' | 'skipped' | 'failed';
+    status: 'ported' | 'skipped' | 'failed' | 'planned';
     reason: string;
     files: number;
 }
@@ -11,4 +11,4 @@ export interface PortResult {
  * Port one skill without deleting its previous installation. Each rename is a
  * filesystem operation; the complete replacement is not atomic on Windows.
  */
-export declare function portSkill(skill: CodexSkillSource, plugin: CodexPluginInfo, targetDir: string, overwrite: boolean): PortResult;
+export declare function portSkill(skill: CodexSkillSource, plugin: CodexPluginInfo, targetDir: string, overwrite: boolean, dryRun?: boolean): PortResult;

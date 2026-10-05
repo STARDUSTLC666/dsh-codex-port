@@ -3,7 +3,7 @@
  *
  * 插件导出 apply(ctx, config)：注册三个面向模型的工具（codex_list / codex_port /
  * codex_status），扫描 ~/.codex 的解包插件与缓存，把官方 Codex 插件技能批量移植为
- * DSH 技能。纯文件系统操作，零运行时依赖（仅 yaml 解析）。
+ * DSH 技能。纯文件系统操作，仅依赖 YAML 解析库。
  *
  * @module dsh-codex-port
  */

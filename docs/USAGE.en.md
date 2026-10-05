@@ -2,6 +2,10 @@
 
 [Overview](../README.en.md) · [Changelog](../CHANGELOG.md) · [Validation](VALIDATION.md)
 
+## Current improvements
+
+Run codex_port with dryRun=true and targetDir="skills-import" first, then remove dryRun to install. An overwrite preview creates no backups or replacements; actual overwrites retain previous / recovery.json.
+
 ## Installation
 
 ```bash
@@ -61,7 +65,7 @@ Ported skills are immediately usable from the DSH skills directory; the agent tr
 - **Idempotent**: same-name skills are skipped by default; `overwrite=true` to replace
 - **Recoverable replacement**: copying, conversion, and read-back validation finish inside a unique `.dsh-port-<skill>-*` directory under the target root before the old skill moves to `previous/` and the new skill takes its place. Copy/conversion failures leave the old skill untouched. A failed switch attempts rollback; if rollback also fails, both copies remain and the error includes their recovery location. Content created by another writer is never deleted.
 - **Backups and path checks**: successful replacements retain `previous/` and `recovery.json`, using additional disk space; archive them manually when recovery is no longer needed. No `SKILL.md` sits at the transaction directory's top level, so current DSH one-level skill discovery does not register backups. Overlapping source/target paths, target symlinks/junctions, paths outside the target root, and Windows device names are rejected. Multiple renames are not one atomic Windows transaction; after process or system interruption, inspect `recovery.json` to restore the appropriate directory.
-- **Safe**: pure filesystem operations, zero runtime dependencies (yaml parsing only)
+- **Safe**: pure filesystem operations, with a YAML parser as the only runtime dependency
 
 ## Development
 

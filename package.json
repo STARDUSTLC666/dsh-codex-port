@@ -1,6 +1,6 @@
 {
   "name": "dsh-codex-port",
-  "version": "0.2.4",
+  "version": "0.3.0",
   "description": "把本机 Codex 技能转换为 DSH 可使用的技能。",
   "type": "module",
   "main": "lib/index.js",

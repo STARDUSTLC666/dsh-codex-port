@@ -4,6 +4,10 @@
 
 These English notes preserve the earlier translations. The main changelog contains the consolidated version history.
 
+## 0.3.0 (2026-10-05)
+
+- Add dryRun previews of installs, replacements and skips without creating target directories. Parse multiline YAML descriptions, resolve relative targets against the session workspace and honor pre-cancellation.
+
 ## 0.2.3 (2026-09-27)
 
 Resolves the Codex directory from explicit codexHome, then CODEX_HOME, then ~/.codex. Custom and isolated homes can now discover plugin skills.

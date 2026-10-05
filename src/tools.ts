@@ -3,7 +3,7 @@
  *
  * @module dsh-codex-port/tools
  */
-import { existsSync, mkdirSync } from 'node:fs'
+import { existsSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { assertCodexHome, type ResolvedCodexPortConfig } from './config.js'
 import { discoverPlugins, type CodexPluginInfo } from './discover.js'
@@ -190,12 +190,14 @@ export function buildCodexPortTools(config: ResolvedCodexPortConfig): CodexPortT
       skills: { type: 'array', items: { type: 'string' }, description: '只移植这些技能（技能名，不区分大小写，可选）。' },
       targetDir: { type: 'string', description: '目标技能目录（可选，默认 <DSH_HOME>/skills）。' },
       overwrite: { type: 'boolean', description: '是否覆盖同名技能（默认 false=跳过）。' },
+      dryRun: { type: 'boolean', description: '为 true 时，只验证并预览安装/替换/跳过清单，不创建目录或修改文件。' },
     }),
     output: {
       schema: portSchema,
       render: (_args, value) => {
         const rec = asRecord(value)
         const counts = asRecord(rec.counts)
+        if (rec.dryRun === true) return [{ type: 'text', text: '移植预览：计划 ' + rec.plannedCount + ' 个，跳过 ' + counts.skipped + ' 个，失败 ' + counts.failed + ' 个。未修改文件。\n' + JSON.stringify(rec.planned, null, 2) }]
         const lines = ['移植完成：新移植 ' + counts.ported + ' 个，跳过 ' + counts.skipped + ' 个，失败 ' + counts.failed + ' 个。目标目录：' + rec.targetDir]
         const ported = Array.isArray(rec.ported) ? rec.ported : []
         for (const item of ported.slice(0, 20)) {
@@ -205,15 +207,18 @@ export function buildCodexPortTools(config: ResolvedCodexPortConfig): CodexPortT
         return [{ type: 'text', text: lines.join('\n') }]
       },
     },
-    async execute(rawArgs: unknown) {
+    async execute(rawArgs: unknown, exec: unknown) {
+      const signal = (exec as { signal?: AbortSignal } | undefined)?.signal
+      signal?.throwIfAborted()
       const args = asRecord(rawArgs)
       const plugins = getPlugins()
       const pluginFilter = stringArray(args, 'plugins').map((name) => name.toLowerCase())
       const skillFilter = stringArray(args, 'skills').map((name) => name.toLowerCase())
       const targetRaw = optionalString(args, 'targetDir')
-      const targetDir = targetRaw !== undefined ? resolve(targetRaw) : config.targetDir
+      const cwd = (exec as { agent?: { session?: { header?: { cwd?: string } } } } | undefined)?.agent?.session?.header?.cwd || process.cwd()
+      const targetDir = resolve(cwd, targetRaw ?? config.targetDir)
       const overwrite = args.overwrite === true ? true : config.overwrite
-      mkdirSync(targetDir, { recursive: true })
+      const dryRun = args.dryRun === true
       const selected: Array<{ plugin: CodexPluginInfo; skills: CodexPluginInfo['skills'] }> = []
       for (const plugin of plugins) {
         if (pluginFilter.length > 0 && !pluginFilter.includes(plugin.name.toLowerCase())) continue
@@ -225,21 +230,25 @@ export function buildCodexPortTools(config: ResolvedCodexPortConfig): CodexPortT
       const ported: PortResult[] = []
       const skipped: PortResult[] = []
       const failed: PortResult[] = []
+      const planned: PortResult[] = []
       for (const group of selected) {
         for (const skill of group.skills) {
-          const result = portSkill(skill, group.plugin, targetDir, overwrite)
+          signal?.throwIfAborted()
+          const result = portSkill(skill, group.plugin, targetDir, overwrite, dryRun)
           if (result.status === 'ported') ported.push(result)
           else if (result.status === 'skipped') skipped.push(result)
+          else if (result.status === 'planned') planned.push(result)
           else failed.push(result)
         }
       }
       return {
         targetDir,
-        total: ported.length + skipped.length + failed.length,
+        total: ported.length + skipped.length + failed.length + planned.length,
         counts: { ported: ported.length, skipped: skipped.length, failed: failed.length },
         ported: ported.map((r) => ({ skill: r.skill, plugin: r.plugin, files: r.files })),
         skipped: skipped.map((r) => ({ skill: r.skill, plugin: r.plugin, reason: r.reason })),
         failed: failed.map((r) => ({ skill: r.skill, plugin: r.plugin, reason: r.reason })),
+        ...(dryRun ? { dryRun, plannedCount: planned.length, planned: planned.map(r => ({ skill: r.skill, plugin: r.plugin, reason: r.reason })) } : {}),
       }
     },
   }
@@ -255,7 +264,9 @@ export function buildCodexPortTools(config: ResolvedCodexPortConfig): CodexPortT
         return [{ type: 'text', text: 'Codex 技能 ' + rec.skills + ' 个，已移植 ' + rec.installed + ' 个，未移植 ' + rec.missing + ' 个。目标目录：' + rec.targetDir }]
       },
     },
-    async execute() {
+    async execute(_args: unknown, exec: unknown) {
+      const cwd = (exec as { agent?: { session?: { header?: { cwd?: string } } } } | undefined)?.agent?.session?.header?.cwd || process.cwd()
+      const targetDir = resolve(cwd, config.targetDir)
       const plugins = getPlugins()
       const allSkills: Array<{ name: string; plugin: string }> = []
       for (const plugin of plugins) {
@@ -265,7 +276,7 @@ export function buildCodexPortTools(config: ResolvedCodexPortConfig): CodexPortT
       let installed = 0
       for (const skill of allSkills) {
         const safeName = sanitizeSkillName(skill.name)
-        if (safeName !== null && existsSync(resolve(config.targetDir, safeName))) {
+        if (safeName !== null && existsSync(resolve(targetDir, safeName))) {
           installed += 1
         } else {
           missingNames.push(skill.name)
@@ -273,7 +284,7 @@ export function buildCodexPortTools(config: ResolvedCodexPortConfig): CodexPortT
       }
       return {
         codexHome: config.codexHome,
-        targetDir: config.targetDir,
+        targetDir,
         plugins: plugins.length,
         skills: allSkills.length,
         installed,

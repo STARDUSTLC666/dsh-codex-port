@@ -11,7 +11,7 @@ import { type CodexPluginInfo, type CodexSkillSource } from './discover.js'
 export interface PortResult {
   skill: string
   plugin: string
-  status: 'ported' | 'skipped' | 'failed'
+  status: 'ported' | 'skipped' | 'failed' | 'planned'
   reason: string
   files: number
 }
@@ -99,7 +99,7 @@ function copyTree(source: string, target: string, sourceRoot: string, root: Inst
  * Port one skill without deleting its previous installation. Each rename is a
  * filesystem operation; the complete replacement is not atomic on Windows.
  */
-export function portSkill(skill: CodexSkillSource, plugin: CodexPluginInfo, targetDir: string, overwrite: boolean): PortResult {
+export function portSkill(skill: CodexSkillSource, plugin: CodexPluginInfo, targetDir: string, overwrite: boolean, dryRun = false): PortResult {
   const safeName = sanitizeSkillName(skill.skillName !== '' ? skill.skillName : skill.skillDirName)
   if (safeName === null || safeName.endsWith('.') || /^(?:con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\.|$)/i.test(safeName)) {
     return { skill: skill.skillDirName, plugin: plugin.name, status: 'failed', reason: '技能名清洗后为空或不合法，已跳过（可能是纯中文或含危险字符的名称）', files: 0 }
@@ -130,6 +130,17 @@ export function portSkill(skill: CodexSkillSource, plugin: CodexPluginInfo, targ
     const source = fs.realpathSync(skill.sourceDir)
     if (source === root.path || isWithin(source, root.path) || source === target || isWithin(target, source)) {
       throw new Error('技能源与安装目标重叠，拒绝递归复制或移动源目录')
+    }
+    if (dryRun) {
+      const skillInfo = fs.lstatSync(join(source, 'SKILL.md'))
+      if (!skillInfo.isFile() || skillInfo.isSymbolicLink()) throw new Error('SKILL.md 必须是普通文件，不能是符号链接。')
+      const converted = convertSkillFile(fs.readFileSync(join(source, 'SKILL.md'), 'utf8'), {
+        pluginName: plugin.name, homepage: plugin.homepage, license: plugin.license,
+      }, safeName)
+      const parsed = parseSkillFile(converted)
+      if (!parsed.hasFrontmatter || parsed.frontmatter.name !== safeName || !DSH_SKILL_NAME.test(safeName)
+        || typeof parsed.frontmatter.description !== 'string' || parsed.frontmatter.description.length === 0) throw new Error('转换后的技能名称或描述无效，不能安装。')
+      return { skill: safeName, plugin: plugin.name, status: 'planned', reason: existing ? '将备份并替换原技能' : '将安装新技能', files: 0 }
     }
     fs.mkdirSync(root.path, { recursive: true })
     root.check(target)
