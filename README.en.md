@@ -8,6 +8,8 @@ Convert locally installed Codex skills into DSH-compatible skills.
 
 [![npm](https://img.shields.io/npm/v/dsh-codex-port)](https://www.npmjs.com/package/dsh-codex-port) [![downloads](https://raw.githubusercontent.com/STARDUSTLC666/dsh-suite/npm-downloads/assets/dsh-codex-port-downloads.svg)](https://www.npmjs.com/package/dsh-codex-port)
 
+Feedback and contributions are welcome: report [issues](https://github.com/STARDUSTLC666/dsh-codex-port/issues) or submit [pull requests](https://github.com/STARDUSTLC666/dsh-codex-port/pulls).
+
 ## What it does
 
 - Discover local Codex skills, including a custom CODEX_HOME.
