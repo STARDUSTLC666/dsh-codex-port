@@ -17,6 +17,8 @@ export const inject = ['tools']
 
 /** 插件所需的最小 ctx 面。 */
 export interface CodexPortPluginContext {
+  get?(name: string): unknown
+  skills?: { list(options?: { cwd?: string; scope?: unknown; signal?: AbortSignal }): Promise<Array<{ name: string }>> }
   tools: { register(definition: CodexPortToolDefinition): () => void }
   on?(event: string, listener: () => void): () => void
 }
@@ -34,7 +36,12 @@ export function apply(ctx: CodexPortPluginContext, config?: CodexPortConfig | nu
   }
 
   const disposers: Array<() => void> = []
-  for (const definition of buildCodexPortTools(cfg)) {
+  for (const definition of buildCodexPortTools(cfg, {
+    existingSkillNames: async options => {
+      const registry = (ctx.get?.('skills') ?? ctx.skills) as CodexPortPluginContext['skills']
+      return registry ? (await registry.list(options)).map(skill => skill.name) : []
+    },
+  })) {
     disposers.push(ctx.tools.register(definition))
   }
   if (typeof ctx.on === 'function') {

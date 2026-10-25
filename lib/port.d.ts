@@ -6,7 +6,10 @@ export interface PortResult {
     status: 'ported' | 'skipped' | 'failed' | 'planned';
     reason: string;
     files: number;
+    policyChanges?: string[];
 }
+/** Check host identities, including flat .md files and differently named folders. */
+export declare function findInstalledSkill(targetDir: string, name: string): string | undefined;
 /**
  * Port one skill without deleting its previous installation. Each rename is a
  * filesystem operation; the complete replacement is not atomic on Windows.

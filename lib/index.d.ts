@@ -14,6 +14,16 @@ export declare const name = "codex-port";
 export declare const inject: string[];
 /** 插件所需的最小 ctx 面。 */
 export interface CodexPortPluginContext {
+    get?(name: string): unknown;
+    skills?: {
+        list(options?: {
+            cwd?: string;
+            scope?: unknown;
+            signal?: AbortSignal;
+        }): Promise<Array<{
+            name: string;
+        }>>;
+    };
     tools: {
         register(definition: CodexPortToolDefinition): () => void;
     };

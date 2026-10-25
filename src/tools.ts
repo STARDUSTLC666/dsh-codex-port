@@ -7,7 +7,7 @@ import { existsSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { assertCodexHome, type ResolvedCodexPortConfig } from './config.js'
 import { discoverPlugins, type CodexPluginInfo } from './discover.js'
-import { portSkill, type PortResult } from './port.js'
+import { portSkill, findInstalledSkill, type PortResult } from './port.js'
 import { sanitizeSkillName } from './frontmatter.js'
 
 /** 模型可见的内容块。 */
@@ -130,7 +130,10 @@ const statusSchema = {
 /**
  * 构建三个工具定义。
  */
-export function buildCodexPortTools(config: ResolvedCodexPortConfig): CodexPortToolDefinition[] {
+export interface CodexPortDependencies {
+  existingSkillNames?(options: { cwd: string; scope?: unknown; signal?: AbortSignal }): Promise<readonly string[]>
+}
+export function buildCodexPortTools(config: ResolvedCodexPortConfig, dependencies: CodexPortDependencies = {}): CodexPortToolDefinition[] {
   const getPlugins = (): CodexPluginInfo[] => {
     assertCodexHome(config.codexHome)
     return discoverPlugins(config.codexHome)
@@ -202,7 +205,7 @@ export function buildCodexPortTools(config: ResolvedCodexPortConfig): CodexPortT
         const ported = Array.isArray(rec.ported) ? rec.ported : []
         for (const item of ported.slice(0, 20)) {
           const row = asRecord(item)
-          lines.push('- ' + row.skill + '（来自 ' + row.plugin + '，' + row.files + ' 个文件）')
+          lines.push('- ' + row.skill + '（来自 ' + row.plugin + '，' + row.files + ' 个文件）' + (row.reason ? '：' + row.reason : ''))
         }
         return [{ type: 'text', text: lines.join('\n') }]
       },
@@ -231,10 +234,15 @@ export function buildCodexPortTools(config: ResolvedCodexPortConfig): CodexPortT
       const skipped: PortResult[] = []
       const failed: PortResult[] = []
       const planned: PortResult[] = []
+      const existingNames = new Set(await dependencies.existingSkillNames?.({ cwd, scope: (exec as { agent?: unknown } | undefined)?.agent, signal }) ?? [])
       for (const group of selected) {
         for (const skill of group.skills) {
           signal?.throwIfAborted()
-          const result = portSkill(skill, group.plugin, targetDir, overwrite, dryRun)
+          const identity = sanitizeSkillName(skill.skillName || skill.skillDirName)
+          const result: PortResult = !overwrite && identity && existingNames.has(identity)
+            ? { skill: identity, plugin: group.plugin.name, status: 'skipped', reason: '宿主已有同名技能（可能来自其它根目录），overwrite=false，已跳过以免遮蔽', files: 0 }
+            : portSkill(skill, group.plugin, targetDir, overwrite, dryRun)
+          if (result.status === 'ported' || result.status === 'planned') existingNames.add(result.skill)
           if (result.status === 'ported') ported.push(result)
           else if (result.status === 'skipped') skipped.push(result)
           else if (result.status === 'planned') planned.push(result)
@@ -245,7 +253,7 @@ export function buildCodexPortTools(config: ResolvedCodexPortConfig): CodexPortT
         targetDir,
         total: ported.length + skipped.length + failed.length + planned.length,
         counts: { ported: ported.length, skipped: skipped.length, failed: failed.length },
-        ported: ported.map((r) => ({ skill: r.skill, plugin: r.plugin, files: r.files })),
+        ported: ported.map((r) => ({ skill: r.skill, plugin: r.plugin, files: r.files, ...(r.reason ? { reason: r.reason } : {}), ...(r.policyChanges ? { policyChanges: r.policyChanges } : {}) })),
         skipped: skipped.map((r) => ({ skill: r.skill, plugin: r.plugin, reason: r.reason })),
         failed: failed.map((r) => ({ skill: r.skill, plugin: r.plugin, reason: r.reason })),
         ...(dryRun ? { dryRun, plannedCount: planned.length, planned: planned.map(r => ({ skill: r.skill, plugin: r.plugin, reason: r.reason })) } : {}),
@@ -276,7 +284,7 @@ export function buildCodexPortTools(config: ResolvedCodexPortConfig): CodexPortT
       let installed = 0
       for (const skill of allSkills) {
         const safeName = sanitizeSkillName(skill.name)
-        if (safeName !== null && existsSync(resolve(targetDir, safeName))) {
+        if (safeName !== null && findInstalledSkill(targetDir, safeName) !== undefined) {
           installed += 1
         } else {
           missingNames.push(skill.name)

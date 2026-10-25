@@ -22,4 +22,11 @@ export interface CodexPortToolDefinition {
 /**
  * 构建三个工具定义。
  */
-export declare function buildCodexPortTools(config: ResolvedCodexPortConfig): CodexPortToolDefinition[];
+export interface CodexPortDependencies {
+    existingSkillNames?(options: {
+        cwd: string;
+        scope?: unknown;
+        signal?: AbortSignal;
+    }): Promise<readonly string[]>;
+}
+export declare function buildCodexPortTools(config: ResolvedCodexPortConfig, dependencies?: CodexPortDependencies): CodexPortToolDefinition[];

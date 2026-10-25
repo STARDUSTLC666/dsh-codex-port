@@ -55,16 +55,34 @@ export function toDshFrontmatter(frontmatter: Record<string, unknown>, attributi
   const fallbackName = typeof frontmatter.title === 'string' ? frontmatter.title : ''
   const name = rawName !== '' ? rawName : fallbackName
   const description = typeof frontmatter.description === 'string' ? frontmatter.description : ''
-  const compatibility = 'Ported from Codex plugin ' + attribution.pluginName + (attribution.homepage !== '' ? ' (' + attribution.homepage + ')' : '') + (attribution.license !== '' && attribution.license !== 'unknown' ? ', license ' + attribution.license : '') + '.'
-  const doc = { name, description, compatibility, 'allowed-tools': 'Bash' }
+  const license = typeof frontmatter.license === 'string' && frontmatter.license.trim() ? frontmatter.license.trim() : attribution.license
+  const origin = 'Ported from Codex plugin ' + attribution.pluginName + (attribution.homepage !== '' ? ' (' + attribution.homepage + ')' : '') + (license !== '' && license !== 'unknown' ? ', license ' + license : '') + '.'
+  const compatibility = typeof frontmatter.compatibility === 'string' && frontmatter.compatibility.trim() ? frontmatter.compatibility.trim() + ' ' + origin : origin
+  const doc: Record<string, unknown> = { name, description, compatibility, 'allowed-tools': frontmatter['allowed-tools'] ?? 'Bash' }
+  for (const key of ['disable-model-invocation', 'user-invocable']) {
+    if (Object.hasOwn(frontmatter, key)) {
+      if (typeof frontmatter[key] !== 'boolean') throw new Error(key + ' 调用策略必须是布尔值，拒绝静默改变权限')
+      doc[key] = frontmatter[key]
+    }
+  }
+  if (frontmatter.whenToUse !== undefined) {
+    if (typeof frontmatter.whenToUse !== 'string') throw new Error('whenToUse 必须是文本')
+    doc.whenToUse = frontmatter.whenToUse
+  }
+  if (frontmatter.metadata !== undefined) {
+    if (!frontmatter.metadata || typeof frontmatter.metadata !== 'object' || Array.isArray(frontmatter.metadata)) throw new Error('metadata 必须是 YAML 映射')
+    doc.metadata = frontmatter.metadata
+  }
+  if (license && license !== 'unknown') doc.license = license
   return '---\n' + YAML.stringify(doc).trimEnd() + '\n---\n'
 }
 
 /**
  * 转换整个 SKILL.md 文本。
  */
-export function convertSkillFile(text: string, attribution: PluginAttribution, fallbackName: string): string {
+export function convertSkillFile(text: string, attribution: PluginAttribution, fallbackName: string, policy: { allowImplicitInvocation?: boolean } = {}): string {
   const parsed = parseSkillFile(text)
-  const frontmatter = parsed.hasFrontmatter ? parsed.frontmatter : { name: fallbackName, description: '' }
+  const frontmatter: Record<string, unknown> = parsed.hasFrontmatter ? { ...parsed.frontmatter } : { name: fallbackName, description: '' }
+  if (policy.allowImplicitInvocation === false) frontmatter['disable-model-invocation'] = true
   return toDshFrontmatter(frontmatter, attribution) + '\n' + parsed.body.trimStart()
 }

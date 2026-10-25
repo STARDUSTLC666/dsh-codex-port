@@ -2,6 +2,10 @@
 
 [Overview](../README.en.md) · [Changelog](../CHANGELOG.md) · [Validation](VALIDATION.md)
 
+## Invocation policy and duplicate names
+
+agents/openai.yaml allow_implicit_invocation:false maps to disable-model-invocation:true. Existing same-name skills in flat files, directories or other host roots are kept by default. dryRun explains skips and preserved policies; a skill-level license takes precedence over the plugin license.
+
 ## Current improvements
 
 Run codex_port with dryRun=true and targetDir="skills-import" first, then remove dryRun to install. An overwrite preview creates no backups or replacements; actual overwrites retain previous / recovery.json.

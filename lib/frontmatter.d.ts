@@ -26,4 +26,6 @@ export declare function toDshFrontmatter(frontmatter: Record<string, unknown>, a
 /**
  * 转换整个 SKILL.md 文本。
  */
-export declare function convertSkillFile(text: string, attribution: PluginAttribution, fallbackName: string): string;
+export declare function convertSkillFile(text: string, attribution: PluginAttribution, fallbackName: string, policy?: {
+    allowImplicitInvocation?: boolean;
+}): string;

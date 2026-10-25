@@ -2,6 +2,10 @@
 
 [返回简介](../README.md) · [更新记录](../CHANGELOG.md) · [验证记录](VALIDATION.md)
 
+## 调用策略与同名技能
+
+agents/openai.yaml 的 allow_implicit_invocation:false 会转换为 disable-model-invocation:true，只允许显式调用。默认保留已有平铺、目录及其他宿主根目录中的同名技能。dryRun 会说明跳过与保留策略；源技能自身的 license 优先于插件级 license。
+
 ## 本次改进
 
 先执行 codex_port { dryRun: true, targetDir: "skills-import" }；确认清单后移除 dryRun 执行。overwrite=true 的预览不会备份或替换，实际覆盖才保留 previous / recovery.json。
