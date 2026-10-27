@@ -1,2 +1,2 @@
 minimumReleaseAgeExclude:
-  - '@stardustlc/dsh-updates@0.1.0'
+  - "@stardustlc/dsh-updates@0.1.0 || 0.1.1"
