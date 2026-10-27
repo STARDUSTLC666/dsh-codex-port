@@ -1,0 +1,2 @@
+minimumReleaseAgeExclude:
+  - '@stardustlc/dsh-updates@0.1.0'
