@@ -1,3 +1,4 @@
+import { registerUpdates } from '@stardustlc/dsh-updates'
 /**
  * dsh-codex-port —— Codex 插件 → DSH 技能移植工具插件（node 半身）。
  *
@@ -27,6 +28,8 @@ export interface CodexPortPluginContext {
  * 插件入口：解析配置并注册三个移植工具。
  */
 export function apply(ctx: CodexPortPluginContext, config?: CodexPortConfig | null): void {
+  registerUpdates(ctx, { name: "dsh-codex-port" })
+
   let cfg
   try {
     cfg = resolveConfig(config)

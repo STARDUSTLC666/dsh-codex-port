@@ -4,6 +4,12 @@
 
 [历史英文记录](docs/CHANGELOG.en.md)
 
+## 0.4.0 (2026-10-26)
+
+- Add this plugin’s own update controls and independent preferences. Automatic installation stays off until explicitly enabled.
+- Confirm manual installs, preserve local sources and disabled state, pause for tasks or unsaved changes, and use native DSH recovery without forced restarts.
+- Require the public DSH 0.2.1-rc.3 update APIs; Suite components remain managed through Suite.
+
 ## 0.3.1（2026-10-26）
 
 - 移植保留 Codex 仅显式调用策略、技能自身许可证与 DSH 调用限制；预览说明保留的策略。检查平铺文件、别名目录和宿主其他根目录的同名技能，默认避免遮蔽。

@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@stardustlc/dsh-updates':
+        specifier: 0.1.0
+        version: 0.1.0
       yaml:
         specifier: ^2.9.0
         version: 2.9.0
@@ -21,8 +24,35 @@ importers:
 
 packages:
 
+  '@stardustlc/dsh-updates@0.1.0':
+    resolution: {integrity: sha512-lIrrfgrqb53psOgEX+Tvf+yWrwaCyEP5JYaLhmfLWs9XQp4j4Onqirv4f1iF9u258lOt8pTsL0U0XIkF2zo5wQ==}
+    engines: {node: ^22.19.0 || >=24.0.0}
+
   '@types/node@24.13.3':
     resolution: {integrity: sha512-Dh8vAsV36ig5wa9OX4pXvMc9D3Veibfw2wix0CUwYODLD8nkj9UsLjASr49nPg+2eKzxhBV+v7L8pXvT4e639Q==}
+
+  acorn@8.15.0:
+    resolution: {integrity: sha512-NZyJarBfL7nWwIq+FDL6Zp/yHEhePMNnnJ0y3qfieCrmNvYct8uvtiV41UvlSe6apAfk0fY1FbWx+NwfmpvtTg==}
+    engines: {node: '>=0.4.0'}
+    hasBin: true
+
+  graceful-fs@4.2.11:
+    resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
+
+  proper-lockfile@4.1.2:
+    resolution: {integrity: sha512-TjNPblN4BwAWMXU8s9AEz4JmQxnD1NNL7bNOY/AKUzyamc379FWASUhc/K1pL2noVb+XmZKLL68cjzLsiOAMaA==}
+
+  retry@0.12.0:
+    resolution: {integrity: sha512-9LkiTwjUh6rT555DtE9rTX+BKByPfrMzEAtnlEtdEwr3Nkffwiihqe2bWADg+OQRjt9gl6ICdmB/ZFDCGAtSow==}
+    engines: {node: '>= 4'}
+
+  semver@7.8.5:
+    resolution: {integrity: sha512-Y7/KDsb8LjooZpwaqGyulO6DQlksgCncchHGk+sZIY4SBvUocMBEFH5Ur1fI4dV+Jvl0w6cjvucaIi40puRioA==}
+    engines: {node: '>=10'}
+    hasBin: true
+
+  signal-exit@3.0.7:
+    resolution: {integrity: sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==}
 
   typescript@5.9.3:
     resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
@@ -39,9 +69,31 @@ packages:
 
 snapshots:
 
+  '@stardustlc/dsh-updates@0.1.0':
+    dependencies:
+      acorn: 8.15.0
+      proper-lockfile: 4.1.2
+      semver: 7.8.5
+
   '@types/node@24.13.3':
     dependencies:
       undici-types: 7.18.2
+
+  acorn@8.15.0: {}
+
+  graceful-fs@4.2.11: {}
+
+  proper-lockfile@4.1.2:
+    dependencies:
+      graceful-fs: 4.2.11
+      retry: 0.12.0
+      signal-exit: 3.0.7
+
+  retry@0.12.0: {}
+
+  semver@7.8.5: {}
+
+  signal-exit@3.0.7: {}
 
   typescript@5.9.3: {}
 
