@@ -1,6 +1,6 @@
 {
   "name": "dsh-codex-port",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "把本机 Codex 技能转换为 DSH 可使用的技能。",
   "type": "module",
   "main": "lib/index.js",
@@ -57,7 +57,7 @@
   },
   "dependencies": {
     "yaml": "^2.9.0",
-    "@stardustlc/dsh-updates": "0.1.2"
+    "@stardustlc/dsh-updates": "0.1.3"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",
