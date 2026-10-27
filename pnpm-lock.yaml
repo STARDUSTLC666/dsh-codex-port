@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@stardustlc/dsh-updates':
-        specifier: 0.1.1
-        version: 0.1.1
+        specifier: 0.1.2
+        version: 0.1.2
       yaml:
         specifier: ^2.9.0
         version: 2.9.0
@@ -24,8 +24,8 @@ importers:
 
 packages:
 
-  '@stardustlc/dsh-updates@0.1.1':
-    resolution: {integrity: sha512-dqtxwMrKCf+QZe0MiAf1fZH8BPmlwdfBTSlMYCGWW7k6IB0RN/TEcXIUe0EDgaH4tOFdzr7GBqt4eOKk499fRA==}
+  '@stardustlc/dsh-updates@0.1.2':
+    resolution: {integrity: sha512-2joIXZZ7PyE0A47aTPal8n+k4AK+tSnL5RIeLMI14U4MwqmHyoKHGCOV6M3CpDbdKbsvdeu75rzH+DJ6Z+0hpA==}
     engines: {node: ^22.19.0 || >=24.0.0}
 
   '@types/node@24.13.3':
@@ -69,7 +69,7 @@ packages:
 
 snapshots:
 
-  '@stardustlc/dsh-updates@0.1.1':
+  '@stardustlc/dsh-updates@0.1.2':
     dependencies:
       acorn: 8.15.0
       proper-lockfile: 4.1.2
