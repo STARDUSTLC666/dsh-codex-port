@@ -4,7 +4,7 @@
 
 ![dsh-codex-port 鲸鱼娘插件封面](https://raw.githubusercontent.com/STARDUSTLC666/dsh-codex-port/master/assets/cover-whale-girl.png)
 
-把本机 Codex 技能转换为 DSH 可使用的技能。
+把本机 Codex 技能移植到 DSH，先预览再选择导入。保留技能调用策略、元数据与许可声明，默认检查重名并保留已有技能。
 
 [![npm](https://img.shields.io/npm/v/dsh-codex-port)](https://www.npmjs.com/package/dsh-codex-port) [![downloads](https://raw.githubusercontent.com/STARDUSTLC666/dsh-suite/npm-downloads/assets/dsh-codex-port-downloads.svg)](https://www.npmjs.com/package/dsh-codex-port)
 
