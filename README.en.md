@@ -6,7 +6,9 @@
 
 Preview and import locally installed Codex skills into DSH. Preserves invocation policy, metadata and license declarations, while checking name conflicts and keeping existing skills by default.
 
-[![npm](https://img.shields.io/npm/v/dsh-codex-port)](https://www.npmjs.com/package/dsh-codex-port) [![downloads](https://raw.githubusercontent.com/STARDUSTLC666/dsh-suite/npm-downloads/assets/dsh-codex-port-downloads.svg)](https://www.npmjs.com/package/dsh-codex-port)
+[![npm](https://img.shields.io/npm/v/dsh-codex-port)](https://www.npmjs.com/package/dsh-codex-port) [![downloads](https://raw.githubusercontent.com/STARDUSTLC666/dsh-suite/npm-downloads/assets/dsh-codex-port-downloads.svg)](https://www.npmjs.com/package/dsh-codex-port) [![total downloads](https://raw.githubusercontent.com/STARDUSTLC666/dsh-suite/npm-downloads/assets/dsh-codex-port-total-downloads.svg)](https://www.npmjs.com/package/dsh-codex-port)
+
+[Download statistics](https://github.com/STARDUSTLC666/dsh-suite/blob/npm-downloads/README.md)
 
 Feedback and contributions are welcome: report [issues](https://github.com/STARDUSTLC666/dsh-codex-port/issues) or submit [pull requests](https://github.com/STARDUSTLC666/dsh-codex-port/pulls).
 
@@ -28,7 +30,10 @@ For the web version, replace `desktop` with `web`. Restart DSH after installatio
 
 ## Start using it
 
-Ask the assistant to list available local skills, then import the ones you select.
+1. Start in the destination DSH workspace and identify the local Codex skill location.
+2. Ask for a list of portable skills, dependencies and license information before copying anything.
+3. Select skills and review the import plan, destination and name conflicts before importing.
+4. Invoke an imported skill in DSH to verify it. Keep the original and review later updates when needed.
 
 ## Requirements and configuration
 

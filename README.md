@@ -6,7 +6,9 @@
 
 把本机 Codex 技能移植到 DSH，先预览再选择导入。保留技能调用策略、元数据与许可声明，默认检查重名并保留已有技能。
 
-[![npm](https://img.shields.io/npm/v/dsh-codex-port)](https://www.npmjs.com/package/dsh-codex-port) [![downloads](https://raw.githubusercontent.com/STARDUSTLC666/dsh-suite/npm-downloads/assets/dsh-codex-port-downloads.svg)](https://www.npmjs.com/package/dsh-codex-port)
+[![npm](https://img.shields.io/npm/v/dsh-codex-port)](https://www.npmjs.com/package/dsh-codex-port) [![downloads](https://raw.githubusercontent.com/STARDUSTLC666/dsh-suite/npm-downloads/assets/dsh-codex-port-downloads.svg)](https://www.npmjs.com/package/dsh-codex-port) [![total downloads](https://raw.githubusercontent.com/STARDUSTLC666/dsh-suite/npm-downloads/assets/dsh-codex-port-total-downloads.svg)](https://www.npmjs.com/package/dsh-codex-port)
+
+[下载统计说明](https://github.com/STARDUSTLC666/dsh-suite/blob/npm-downloads/README.md)
 
 欢迎使用，遇到问题或有改进建议，请提交 [issues](https://github.com/STARDUSTLC666/dsh-codex-port/issues) 和 [PR](https://github.com/STARDUSTLC666/dsh-codex-port/pulls)。
 
@@ -28,7 +30,10 @@ dsh plugin --profile desktop add dsh-codex-port
 
 ## 开始使用
 
-先让助手列出可移植技能，再说：“把这些选中的技能移植到 DSH。”
+1. 在目标 DSH 工作区开始会话，指出本地 Codex 技能所在位置。
+2. 先让助手列出可移植技能、依赖和许可说明，不要直接全部复制。
+3. 选择需要的技能，核对导入预览、目标目录与重名冲突后再执行导入。
+4. 在 DSH 中调用一个导入技能验证效果；原技能保持不变，后续按需要重新检查或更新。
 
 ## 依赖与配置
 
