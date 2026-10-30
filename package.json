@@ -1,7 +1,7 @@
 {
   "name": "dsh-codex-port",
-  "version": "0.4.6",
-  "description": "将 Codex 技能移植到 DSH：导入预览、调用策略与许可保留、重名检查。欢迎提交 issues 和 PR。",
+  "version": "0.4.7",
+  "description": "把常用 Codex 技能带到 DSH。 技能需要的运行环境与第三方依赖仍需单独准备。 欢迎提交 issues 和 PR。",
   "type": "module",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

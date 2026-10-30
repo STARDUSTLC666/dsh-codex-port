@@ -1,32 +1,35 @@
-# dsh-codex-port
+[简体中文](README.md) · **English**
 
-[中文](README.md)
+# Codex Port
 
-![dsh-codex-port whale girl plugin cover](https://raw.githubusercontent.com/STARDUSTLC666/dsh-codex-port/master/assets/cover-whale-girl.png)
-
-Preview and import locally installed Codex skills into DSH. Preserves invocation policy, metadata and license declarations, while checking name conflicts and keeping existing skills by default.
+**Bring your familiar Codex skills into DSH.**
 
 [![npm](https://img.shields.io/npm/v/dsh-codex-port)](https://www.npmjs.com/package/dsh-codex-port) [![downloads](https://raw.githubusercontent.com/STARDUSTLC666/dsh-suite/npm-downloads/assets/dsh-codex-port-downloads.svg)](https://www.npmjs.com/package/dsh-codex-port) [![total downloads](https://raw.githubusercontent.com/STARDUSTLC666/dsh-suite/npm-downloads/assets/dsh-codex-port-total-downloads.svg)](https://www.npmjs.com/package/dsh-codex-port)
 
-[Download statistics](https://github.com/STARDUSTLC666/dsh-suite/blob/npm-downloads/README.md)
+**[Install](#install) · [Workflow](#start-using-it) · [Full guide](https://github.com/STARDUSTLC666/dsh-codex-port/blob/master/docs/REFERENCE.en.md)**
 
-Feedback and contributions are welcome: report [issues](https://github.com/STARDUSTLC666/dsh-codex-port/issues) or submit [pull requests](https://github.com/STARDUSTLC666/dsh-codex-port/pulls).
+<picture>
+  <source media="(prefers-color-scheme: dark) and (max-width: 640px)" srcset="https://raw.githubusercontent.com/STARDUSTLC666/dsh-codex-port/master/docs/assets/intro/workflow-en-mobile-dark.svg">
+  <source media="(max-width: 640px)" srcset="https://raw.githubusercontent.com/STARDUSTLC666/dsh-codex-port/master/docs/assets/intro/workflow-en-mobile-light.svg">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/STARDUSTLC666/dsh-codex-port/master/docs/assets/intro/workflow-en-dark.svg">
+  <img src="https://raw.githubusercontent.com/STARDUSTLC666/dsh-codex-port/master/docs/assets/intro/workflow-en-light.svg" alt="Bring your familiar Codex skills into DSH. · workflow illustration" width="100%">
+</picture>
 
-## What it does
+## Features
 
-- Discover local Codex skills, including a custom CODEX_HOME.
-- Convert frontmatter and normalize skill names.
-- Import selected skills, skip duplicates and report results.
+- Inspect available skills, dependencies and licenses.
+- Review the destination and name conflicts before importing.
+- Import selected skills and inspect the migration report.
 
 ## Install
 
-In DSH Desktop, install `dsh-codex-port` from the Plugins panel. If the bundled dsh command is available:
+Open **Plugins** in the DSH desktop app and install `dsh-codex-port`. If the CLI is available:
 
 ```bash
 dsh plugin --profile desktop add dsh-codex-port
 ```
 
-For the web version, replace `desktop` with `web`. Restart DSH after installation.
+For the web profile, replace `desktop` with `web`. Restart that DSH profile after installation. The package’s DSH requirement is `>=0.2.1-rc.3`.
 
 ## Start using it
 
@@ -35,25 +38,33 @@ For the web version, replace `desktop` with `web`. Restart DSH after installatio
 3. Select skills and review the import plan, destination and name conflicts before importing.
 4. Invoke an imported skill in DSH to verify it. Keep the original and review later updates when needed.
 
-## Requirements and configuration
+Example request：
 
-Requires a local Codex skills directory. Imported skills may still need their original tools, services or credentials.
+> List locally available skills and preview the destination and conflicts. Do not import yet.
 
-Detailed configuration, tool arguments and troubleshooting are in the [usage guide](docs/USAGE.en.md). For standalone development, follow the Node requirement in [package.json](package.json).
+## Before you start
 
-## Documentation
+Skills may still require their own runtimes and third-party dependencies.
 
-- [Usage and troubleshooting](docs/USAGE.en.md)
-- [Changelog](CHANGELOG.md)
-- [Validation scope and history](docs/VALIDATION.md)
-- [Report a problem or suggest a feature](https://github.com/STARDUSTLC666/dsh-codex-port/issues)
+Configuration, detailed tools and troubleshooting: [full reference](https://github.com/STARDUSTLC666/dsh-codex-port/blob/master/docs/REFERENCE.en.md).
 
 ## Plugin updates
 
-Requires DSH 0.2.1-rc.3 or newer. Update controls sit at the bottom of the existing workbench, or native plugin details for plugins without a workbench. Checks, release notes and preferences expand in place, with no separate update page or settings menu. Automatic checks are on by default; **automatic installation is off by default**. Only explicit opt-in permits compatible stable patches while idle with no unsaved changes. Preferences are independent, with per-plugin disable, deferral and ignore controls. No forced DSH restart or upgrade, and local-source installations stay unchanged. Suite components explain and operate on the whole Suite in the same footer.
+Check updates at the bottom of the workbench or native plugin details. Automatic checks are on by default; **automatic installation is off**. You choose whether to install and when to restart. Suite-managed components update with their bundle. [Update behavior](https://github.com/STARDUSTLC666/dsh-codex-port/blob/master/docs/REFERENCE.en.md).
 
-Older releases need one manual update in native plugin management to acquire these controls. Publishing to npm does not replace an existing user installation.
+## Documentation
+
+- [Full usage, configuration and limits](https://github.com/STARDUSTLC666/dsh-codex-port/blob/master/docs/REFERENCE.en.md)
+- [Release notes](https://github.com/STARDUSTLC666/dsh-codex-port/blob/master/CHANGELOG.md)
+- [Validation scope and history](https://github.com/STARDUSTLC666/dsh-codex-port/blob/master/docs/VALIDATION.md)
+
+## Feedback and contributions
+
+If the plugin helps, a Star makes it easier for others to discover. Report problems or suggest improvements in [Issues](https://github.com/STARDUSTLC666/dsh-codex-port/issues); code and documentation [PRs](https://github.com/STARDUSTLC666/dsh-codex-port/pulls) are welcome. Include versions and reproduction steps, and remove credentials from reports.
 
 ## License
 
-[MIT](LICENSE)
+[MIT](https://github.com/STARDUSTLC666/dsh-codex-port/blob/master/LICENSE)
+
+<a id="what-it-does"></a>
+<a id="requirements-and-configuration"></a>
