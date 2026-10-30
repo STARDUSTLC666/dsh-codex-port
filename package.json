@@ -1,6 +1,6 @@
 {
   "name": "dsh-codex-port",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "将 Codex 技能移植到 DSH：导入预览、调用策略与许可保留、重名检查。欢迎提交 issues 和 PR。",
   "type": "module",
   "main": "lib/index.js",
@@ -20,7 +20,8 @@
     "README.md",
     "README.en.md",
     "docs",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "assets/plugin-icon.webp"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json && node scripts/build-updates.mjs",
@@ -72,5 +73,6 @@
   },
   "homepage": "https://github.com/STARDUSTLC666/dsh-codex-port#readme",
   "author": "stardustlc",
-  "packageManager": "pnpm@11.7.0"
+  "packageManager": "pnpm@11.7.0",
+  "icon": "./assets/plugin-icon.webp"
 }
