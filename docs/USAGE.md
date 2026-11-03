@@ -93,6 +93,19 @@ pnpm install
 pnpm test       # 构建 + 离线测试；fixture 只写入工作区 .harness-validation/codex-port-tests
 ```
 
+## 故障排查
+
+先运行 `codex_health`：它检查 Codex 主目录、插件目录、目标技能目录是否可写，并统计可发现的技能数（不执行移植）。
+
+| 现象 | 常见原因 | 处理 |
+| :-- | :-- | :-- |
+| `Codex 家目录不存在` | 没装 Codex CLI，或用的是自定义目录 | 安装 Codex，或在配置里用 `codexHome` 指定真实目录 |
+| `codex_list` 返回 0 个插件 | Codex 里还没安装官方插件 | 先在 Codex 安装插件，再重新运行 `codex_list` |
+| 目标技能目录不可写 | 权限不足或路径被占用 | 换一个可写目录（`targetDir` 参数或插件配置） |
+| 移植结果「跳过 N 个」 | 目标已有同名技能 | 确认后加 `overwrite: true` 重跑；会保留 `previous/` 与 `recovery.json` |
+| 移植失败提示名称不合法 | 技能名清洗后为空或不合规 | 检查源技能名（纯中文或含危险字符会被拒绝） |
+| 想先看会改哪些文件 | — | 先用 `codex_port { dryRun: true }` 预览，只读不落盘 |
+
 ## License
 
 MIT

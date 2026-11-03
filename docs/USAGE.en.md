@@ -78,6 +78,19 @@ pnpm install
 pnpm test       # build + offline tests; fixtures stay under workspace .harness-validation/codex-port-tests
 ```
 
+## Troubleshooting
+
+Run `codex_health` first: it checks the Codex home, the plugin directory, whether the target skills directory is writable, and how many skills are discoverable (without porting anything).
+
+| Symptom | Usual cause | What to do |
+| :-- | :-- | :-- |
+| `Codex 家目录不存在` | Codex CLI not installed, or a custom location | Install Codex, or set `codexHome` in the config |
+| `codex_list` returns 0 plugins | No official plugins installed in Codex yet | Install plugins in Codex, then re-run `codex_list` |
+| Target skills directory is not writable | Permission issue, or the path is occupied | Pick a writable directory via `targetDir` or the plugin config |
+| Result shows "skipped N" | Same-named skills already exist | Re-run with `overwrite: true`; `previous/` and `recovery.json` are kept |
+| Failure says the sanitized name is invalid | Name becomes empty or illegal after sanitizing | Check the source skill name (pure CJK or dangerous characters are rejected) |
+| Want to preview the changes first | — | Run `codex_port { dryRun: true }`: read-only, nothing is written |
+
 ## License
 
 MIT
