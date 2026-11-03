@@ -1,5 +1,10 @@
 # 更新记录
 
+## 0.4.7 (2026-11-03)
+
+- 渲染 skipped/failed 原因与下一步；health 检查目标目录可写性与可发现技能数。
+- Renders skipped/failed reasons with next steps; health checks target writability and discoverable skills.
+
 ## 0.4.6 (2026-10-30)
 
 - 原生插件列表与详情新增专门生成的鲸鱼娘图标：大头像、独立功能符号、透明留白，适合 30 / 36 px 显示；原封面保留。
