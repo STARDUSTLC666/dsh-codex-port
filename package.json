@@ -1,6 +1,6 @@
 {
   "name": "dsh-codex-port",
-  "version": "0.4.8",
+  "version": "0.4.9",
   "description": "将 Codex 技能移植到 DSH：导入预览、调用策略与许可保留、重名检查。欢迎提交 issues 和 PR。",
   "type": "module",
   "main": "lib/index.js",
@@ -58,7 +58,7 @@
   },
   "dependencies": {
     "yaml": "^2.9.0",
-    "@stardustlc/dsh-updates": "0.1.3"
+    "@stardustlc/dsh-updates": "0.1.4"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",

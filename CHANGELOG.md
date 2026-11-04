@@ -1,5 +1,11 @@
 # 更新记录
 
+## 0.4.9 (2026-11-04)
+
+- 同步共享界面：嵌入设置时继承宿主底色，输入框跟随主题，空状态保持可读宽度；新版 DSH 可显示插件设置图标。
+- Align embedded surfaces, themed inputs, readable empty states and optional native settings icons.
+
+
 ## 0.4.8 (2026-11-03)
 
 - 渲染 skipped/failed 原因与下一步；health 检查目标目录可写性与可发现技能数。
