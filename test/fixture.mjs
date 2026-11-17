@@ -1,9 +1,9 @@
 /** 构造临时 Codex 家目录 fixture：解包插件 + 缓存插件 + 噪音目录。 */
 import { mkdirSync, writeFileSync, mkdtempSync, realpathSync, rmSync, lstatSync } from 'node:fs'
-import { join, dirname, resolve, relative, isAbsolute, sep } from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { tmpdir } from 'node:os'
+import { join, resolve, relative, isAbsolute, sep } from 'node:path'
 
-export const testRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../../.harness-validation/codex-port-tests')
+export const testRoot = join(realpathSync(tmpdir()), 'dsh-codex-port-tests')
 
 export function makeTestDir(prefix) {
   mkdirSync(testRoot, { recursive: true })

@@ -4,7 +4,7 @@
  * @module dsh-codex-port/tools
  */
 import { accessSync, constants, existsSync } from 'node:fs'
-import { dirname, resolve } from 'node:path'
+import { dirname, join, resolve } from 'node:path'
 import { assertCodexHome, type ResolvedCodexPortConfig } from './config.js'
 import { discoverPlugins, type CodexPluginInfo } from './discover.js'
 import { portSkill, findInstalledSkill, type PortResult } from './port.js'
@@ -25,6 +25,7 @@ export interface CodexPortToolDefinition {
     schema: Record<string, unknown>
     render(args: unknown, value: unknown): ContentBlock[]
   }
+  isConcurrencySafe?(args?: unknown): boolean
   execute(args: unknown, exec: unknown): Promise<unknown>
 }
 
@@ -141,6 +142,7 @@ export function buildCodexPortTools(config: ResolvedCodexPortConfig, dependencie
 
   const codexList: CodexPortToolDefinition = {
     name: 'codex_list',
+    isConcurrencySafe: () => true,
     description: '列出 ~/.codex 里发现的 Codex 官方插件与其技能（含解包目录与插件缓存）。可选 plugin 过滤插件名、skill 过滤技能名。limit 控制返回插件数（1-200，默认 20）。',
     parameters: compileParameters({
       plugin: { type: 'string', description: '按插件名过滤（不区分大小写，子串匹配，可选）。' },
@@ -193,6 +195,7 @@ export function buildCodexPortTools(config: ResolvedCodexPortConfig, dependencie
 
   const codexPort: CodexPortToolDefinition = {
     name: 'codex_port',
+    isConcurrencySafe: (args) => asRecord(args).dryRun === true,
     description: '把 Codex 插件技能移植为 DSH 技能（写入 DSH 技能目录）。frontmatter 自动转换、剔除 agents 等 codex 专属文件、名称清洗、同名默认跳过（overwrite=true 覆盖）。plugins/skills 参数可限定范围，缺省移植全部。',
     parameters: compileParameters({
       plugins: { type: 'array', items: { type: 'string' }, description: '只移植这些插件（插件名，不区分大小写，可选）。' },
@@ -303,6 +306,7 @@ export function buildCodexPortTools(config: ResolvedCodexPortConfig, dependencie
 
   const codexStatus: CodexPortToolDefinition = {
     name: 'codex_status',
+    isConcurrencySafe: () => true,
     description: '对比 Codex 技能源与 DSH 技能目录：报告可用技能总数、已移植数、未移植清单（前 100 个）。',
     parameters: compileParameters({}),
     output: {
@@ -354,6 +358,7 @@ export function buildCodexPortTools(config: ResolvedCodexPortConfig, dependencie
 
   const codexHealth: CodexPortToolDefinition = {
     name: 'codex_health',
+    isConcurrencySafe: () => true,
     description: 'dsh-codex-port 自检：检查 Codex 主目录（~/.codex 或自定义）是否存在、插件目录是否可见（不执行任何移植）。遇到问题时先运行本工具定位。',
     parameters: compileParameters({
       codexHome: { type: 'string', description: 'Codex 主目录（可选，缺省用配置或 ~/.codex）。' },
@@ -392,7 +397,7 @@ export function buildCodexPortTools(config: ResolvedCodexPortConfig, dependencie
         return { ok: false, plugin: 'dsh-codex-port', codexHome: home, targetDir: config.targetDir, checks }
       }
       let ok = true
-      const pluginsDir = home + '/plugins'
+      const pluginsDir = join(home, 'plugins')
       const pluginsOk = existsSync(pluginsDir)
       // 没装插件不是故障：空目录照样能自检，只说明「暂时没有可移植的技能」。
       checks.push({ name: '插件目录', ok: true, detail: pluginsOk ? pluginsDir : pluginsDir + '（不存在：Codex 里还没安装官方插件，安装后重新运行本自检）' })

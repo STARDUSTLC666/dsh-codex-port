@@ -19,8 +19,10 @@ export const inject = ['tools']
 /** 插件所需的最小 ctx 面。 */
 export interface CodexPortPluginContext {
   get?(name: string): unknown
+  logger?: { warn?(message: string, ...args: unknown[]): void }
   skills?: { list(options?: { cwd?: string; scope?: unknown; signal?: AbortSignal }): Promise<Array<{ name: string }>> }
   tools: { register(definition: CodexPortToolDefinition): () => void }
+  effect?(effect: () => () => void, label?: string): unknown
   on?(event: string, listener: () => void): () => void
 }
 
@@ -30,11 +32,16 @@ export interface CodexPortPluginContext {
 export function apply(ctx: CodexPortPluginContext, config?: CodexPortConfig | null): void {
   registerUpdates(ctx, { name: "dsh-codex-port" })
 
+  const warn = (message: string) => {
+    if (typeof ctx.logger?.warn === 'function') ctx.logger.warn(message)
+    else console.warn(message)
+  }
+
   let cfg
   try {
     cfg = resolveConfig(config)
   } catch (error) {
-    console.warn('[dsh-codex-port] ' + (error instanceof Error ? error.message : String(error)))
+    warn('[dsh-codex-port] ' + (error instanceof Error ? error.message : String(error)))
     cfg = resolveConfig(null)
   }
 
@@ -47,10 +54,13 @@ export function apply(ctx: CodexPortPluginContext, config?: CodexPortConfig | nu
   })) {
     disposers.push(ctx.tools.register(definition))
   }
-  if (typeof ctx.on === 'function') {
-    ctx.on('dispose', () => {
-      for (const dispose of disposers) dispose()
-    })
+  const teardown = () => {
+    for (const dispose of disposers) dispose()
+  }
+  if (typeof ctx.effect === 'function') {
+    ctx.effect(() => teardown, 'codex-port.tools()')
+  } else if (typeof ctx.on === 'function') {
+    ctx.on('dispose', teardown)
   }
 }
 

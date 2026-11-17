@@ -15,6 +15,9 @@ export declare const inject: string[];
 /** 插件所需的最小 ctx 面。 */
 export interface CodexPortPluginContext {
     get?(name: string): unknown;
+    logger?: {
+        warn?(message: string, ...args: unknown[]): void;
+    };
     skills?: {
         list(options?: {
             cwd?: string;
@@ -27,6 +30,7 @@ export interface CodexPortPluginContext {
     tools: {
         register(definition: CodexPortToolDefinition): () => void;
     };
+    effect?(effect: () => () => void, label?: string): unknown;
     on?(event: string, listener: () => void): () => void;
 }
 /**

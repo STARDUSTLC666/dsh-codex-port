@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Codex Port",
+    "description": "Port Codex skills into DSH with dry-run previews, invocation policy and license preservation, and duplicate skill collision checks."
+  }
+}

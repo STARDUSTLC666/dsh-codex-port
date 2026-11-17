@@ -1,6 +1,6 @@
 {
   "name": "dsh-codex-port",
-  "version": "0.4.11",
+  "version": "0.4.12",
   "description": "将 Codex 技能移植到 DSH：导入预览、调用策略与许可保留、重名检查。欢迎提交 issues 和 PR。",
   "type": "module",
   "main": "lib/index.js",
@@ -12,7 +12,9 @@
     },
     "./cordis.patch.yml": "./cordis.patch.yml",
     "./package.json": "./package.json",
-    "./client": "./lib/update-client.js"
+    "./client": "./lib/update-client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./assets/plugin-icon.webp"
   },
   "files": [
     "lib",
@@ -21,7 +23,8 @@
     "README.en.md",
     "docs",
     "CHANGELOG.md",
-    "assets/plugin-icon.webp"
+    "assets/plugin-icon.webp",
+    "locale"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json && node scripts/build-updates.mjs",
@@ -30,6 +33,7 @@
     "prepublishOnly": "npm run build"
   },
   "dsh": {
+    "manifestVersion": 1,
     "bundle": {
       "patch": "./cordis.patch.yml"
     },
