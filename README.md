@@ -4,6 +4,8 @@
 
 **把常用 Codex 技能带到 DSH。**
 
+DeepSeek Harness（`>=0.2.2-rc.3`）Codex 技能移植插件：支持发现本机 Codex 技能、预览目标路径与重名冲突、保留调用策略与许可说明，并适配 Windows 路径与 Cordis 热重载清理。
+
 [![npm](https://img.shields.io/npm/v/dsh-codex-port)](https://www.npmjs.com/package/dsh-codex-port) [![downloads](https://raw.githubusercontent.com/STARDUSTLC666/dsh-suite/npm-downloads/assets/dsh-codex-port-downloads.svg)](https://www.npmjs.com/package/dsh-codex-port) [![total downloads](https://raw.githubusercontent.com/STARDUSTLC666/dsh-suite/npm-downloads/assets/dsh-codex-port-total-downloads.svg)](https://www.npmjs.com/package/dsh-codex-port)
 
 **[安装使用](#安装) · [使用流程](#开始使用) · [完整说明](https://github.com/STARDUSTLC666/dsh-codex-port/blob/master/docs/REFERENCE.zh.md)**

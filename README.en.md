@@ -4,6 +4,8 @@
 
 **Bring your familiar Codex skills into DSH.**
 
+Codex skill porting plugin for DeepSeek Harness (`>=0.2.2-rc.3`): discovers local Codex skills, previews destinations and name collisions before copying, preserves invocation policies and licenses, and supports Windows paths with Cordis cleanup.
+
 [![npm](https://img.shields.io/npm/v/dsh-codex-port)](https://www.npmjs.com/package/dsh-codex-port) [![downloads](https://raw.githubusercontent.com/STARDUSTLC666/dsh-suite/npm-downloads/assets/dsh-codex-port-downloads.svg)](https://www.npmjs.com/package/dsh-codex-port) [![total downloads](https://raw.githubusercontent.com/STARDUSTLC666/dsh-suite/npm-downloads/assets/dsh-codex-port-total-downloads.svg)](https://www.npmjs.com/package/dsh-codex-port)
 
 **[Install](#install) · [Workflow](#start-using-it) · [Full guide](https://github.com/STARDUSTLC666/dsh-codex-port/blob/master/docs/REFERENCE.en.md)**

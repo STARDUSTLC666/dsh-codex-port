@@ -1,6 +1,6 @@
 {
   "meta": {
     "title": "Codex 技能移植",
-    "description": "将 Codex 官方插件技能批量移植到 DSH：导入预览、调用策略与许可保留、同名冲突检查。"
+    "description": "将本地 Codex 技能按需移植到 DSH：导入前预览、保留调用策略与许可、自动检查同名冲突。"
   }
 }
