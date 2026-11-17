@@ -1,5 +1,10 @@
 # 更新记录
 
+## 0.4.11 (2026-11-17)
+
+- 在原生插件详情页单独检查和安装兼容版本。自动安装默认关闭，可为该插件开启空闲时的稳定补丁更新。
+- Check and install compatible versions separately from the native plugin details. Automatic installation is off by default. Enable it for this plugin to apply stable patches while idle.
+
 ## 0.4.10 (2026-11-14)
 
 - 适配 DSH 0.2.2-rc.3：最低 Harness 版本声明提升至 0.2.2-rc.3，运行时代码未变。
