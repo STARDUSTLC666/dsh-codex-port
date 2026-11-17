@@ -1,5 +1,10 @@
 # 更新记录
 
+## 0.4.13 (2026-11-18)
+
+- 同步 `@stardustlc/dsh-updates` 0.2.1：恢复 Suite 整包统一更新（移除独立拆包迁移），保留整包与独立插件的原地热更新与失败自动回滚。
+- Sync `@stardustlc/dsh-updates` 0.2.1: restore unified Suite bundle updates (removing standalone conversion) while retaining in-place hot reload and automatic rollback.
+
 ## 0.4.12 (2026-11-18)
 
 - 深度适配 DSH 0.2.2：补齐 manifestVersion 1 与双语元数据；改用 Cordis 4 `ctx.effect` 释放生命周期资源，修复 Windows 插件目录路径拼接并为只读工具声明并发安全。
