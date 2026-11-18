@@ -1,6 +1,6 @@
 {
   "name": "dsh-codex-port",
-  "version": "0.4.16",
+  "version": "0.4.17",
   "description": "DeepSeek Harness Codex 技能移植插件：离线预览导入、保留调用策略与许可、检测同名冲突。欢迎提交 issues 和 PR。",
   "type": "module",
   "main": "lib/index.js",
@@ -61,7 +61,7 @@
   },
   "dependencies": {
     "yaml": "^2.9.0",
-    "@stardustlc/dsh-updates": "0.2.4"
+    "@stardustlc/dsh-updates": "0.2.5"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",
