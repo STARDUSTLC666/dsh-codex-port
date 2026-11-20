@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@stardustlc/dsh-updates':
-        specifier: 0.2.7
-        version: 0.2.7
+        specifier: 0.2.9
+        version: 0.2.9
       yaml:
         specifier: ^2.9.0
         version: 2.9.0
@@ -24,8 +24,8 @@ importers:
 
 packages:
 
-  '@stardustlc/dsh-updates@0.2.7':
-    resolution: {integrity: sha512-JYymKsQc66TkYamTnD30TGKpg/jm+BmlrGmgYc3aZT4DZekECsLcum6ljRSbFGyaugXcnZClJ6EX/oKlgGitIA==}
+  '@stardustlc/dsh-updates@0.2.9':
+    resolution: {integrity: sha512-XGNM0rp5p2jvdfj+29Qgm3gKEiXmbRmxl/I9iSqO3Y4nQYJPoZsuHLlGCTWWev0YEkble87LkwjgOdDibez2Fw==}
     engines: {node: ^22.19.0 || >=24.0.0}
 
   '@types/node@24.13.3':
@@ -36,8 +36,8 @@ packages:
     engines: {node: '>=0.4.0'}
     hasBin: true
 
-  graceful-fs@4.2.11:
-    resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
+  graceful-fs@4.2.12:
+    resolution: {integrity: sha512-iuyGF2E4oafQfPsRrG2wtY2ILupMhvtdrhzrxB+0VcjsPpSPttpfYdjnGFGsTi5MaJFjI1jOKHPQ6UTbTj9TAw==}
 
   proper-lockfile@4.1.2:
     resolution: {integrity: sha512-TjNPblN4BwAWMXU8s9AEz4JmQxnD1NNL7bNOY/AKUzyamc379FWASUhc/K1pL2noVb+XmZKLL68cjzLsiOAMaA==}
@@ -69,7 +69,7 @@ packages:
 
 snapshots:
 
-  '@stardustlc/dsh-updates@0.2.7':
+  '@stardustlc/dsh-updates@0.2.9':
     dependencies:
       acorn: 8.15.0
       proper-lockfile: 4.1.2
@@ -81,11 +81,11 @@ snapshots:
 
   acorn@8.15.0: {}
 
-  graceful-fs@4.2.11: {}
+  graceful-fs@4.2.12: {}
 
   proper-lockfile@4.1.2:
     dependencies:
-      graceful-fs: 4.2.11
+      graceful-fs: 4.2.12
       retry: 0.12.0
       signal-exit: 3.0.7
 

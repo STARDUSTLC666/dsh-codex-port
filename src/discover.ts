@@ -103,8 +103,7 @@ function enumerateSkills(pluginDir: string): CodexSkillSource[] {
  * 同名插件按 版本最新 > 目录修改时间 去重。
  */
 export function discoverPlugins(codexHome: string): CodexPluginInfo[] {
-  const found = new Map<string, CodexPluginInfo>()
-  const seen = new Set<string>()
+  const found = new Map<string, { manifest: NonNullable<ReturnType<typeof readPluginManifest>>; dir: string; priority: number }>()
   const candidates: Array<{ dir: string; priority: number }> = []
 
   const unpacked = join(codexHome, '.tmp', 'plugins', 'plugins')
@@ -136,17 +135,17 @@ export function discoverPlugins(codexHome: string): CodexPluginInfo[] {
     const manifest = readPluginManifest(candidate.dir)
     if (manifest === null) continue
     const key = manifest.name.toLowerCase()
-    const skills = enumerateSkills(candidate.dir)
-    const info: CodexPluginInfo = { ...manifest, sourceDir: candidate.dir, skills }
     const existing = found.get(key)
     if (existing === undefined) {
-      found.set(key, info)
-      seen.add(key + ':' + candidate.dir)
+      found.set(key, { ...candidate, manifest })
     } else {
-      const betterPriority = candidate.priority > (candidates.find((c) => c.dir === existing.sourceDir)?.priority ?? -1)
-      const newerVersion = manifest.version !== 'unknown' && manifest.version !== existing.version && isNewerVersion(manifest.version, existing.version)
-      if (betterPriority || newerVersion) found.set(key, info)
+      const betterPriority = candidate.priority > existing.priority
+      const newerVersion = manifest.version !== 'unknown' && manifest.version !== existing.manifest.version && isNewerVersion(manifest.version, existing.manifest.version)
+      if (betterPriority || newerVersion) found.set(key, { ...candidate, manifest })
     }
   }
-  return [...found.values()].sort((a, b) => a.name.localeCompare(b.name))
+  // Resolve duplicates before opening skills: a cache can retain many versions
+  // of one plugin, while only the selected version is usable by the caller.
+  return [...found.values()].map(({ manifest, dir }) => ({ ...manifest, sourceDir: dir, skills: enumerateSkills(dir) }))
+    .sort((a, b) => a.name.localeCompare(b.name))
 }
