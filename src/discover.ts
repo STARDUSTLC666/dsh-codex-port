@@ -4,8 +4,9 @@
  *
  * @module dsh-codex-port/discover
  */
-import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync, statSync, openSync, readSync, closeSync } from 'node:fs'
 import { join } from 'node:path'
+import { StringDecoder } from 'node:string_decoder'
 import { parseSkillFile } from './frontmatter.js'
 
 /** 单个技能源。 */
@@ -75,6 +76,27 @@ function readPluginManifest(pluginDir: string): { name: string; version: string;
 }
 
 /** 从插件目录枚举技能（skills/<dir>/SKILL.md）。 */
+function skillMetadata(file: string): string {
+  const descriptor = openSync(file, 'r'), decoder = new StringDecoder('utf8')
+  const buffer = Buffer.allocUnsafe(16 * 1024)
+  let text = ''
+  let searchFrom = 4
+  try {
+    for (;;) {
+      const count = readSync(descriptor, buffer)
+      if (!count) return text + decoder.end()
+      text += decoder.write(buffer.subarray(0, count))
+      // Discovery uses only frontmatter. Stop before allocating a large body,
+      // preserving the same parser and allowing headers across chunk boundaries.
+      if (text.length < 5) continue
+      if (!/^---\r?\n/.test(text)) return text
+      const end = text.indexOf('\n---', searchFrom)
+      if (end >= 0) return text.slice(0, end + 4) + '\n'
+      searchFrom = Math.max(4, text.length - 3)
+    }
+  } finally { closeSync(descriptor) }
+}
+
 function enumerateSkills(pluginDir: string): CodexSkillSource[] {
   const skillsDir = join(pluginDir, 'skills')
   if (!isDir(skillsDir)) return []
@@ -87,7 +109,7 @@ function enumerateSkills(pluginDir: string): CodexSkillSource[] {
     let skillName = entry.name
     let description = ''
     try {
-      const text = readFileSync(skillFile, 'utf8')
+      const text = skillMetadata(skillFile)
       const parsed = parseSkillFile(text)
       if (typeof parsed.frontmatter.name === 'string') skillName = parsed.frontmatter.name.trim() || entry.name
       if (typeof parsed.frontmatter.description === 'string') description = parsed.frontmatter.description.trim().slice(0, 160)
