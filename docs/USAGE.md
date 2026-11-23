@@ -44,8 +44,9 @@ dsh plugin --profile web remove dsh-codex-port
 | 工具 | 作用 | 关键参数 |
 | :-- | :-- | :-- |
 | `codex_list` | 列出发现的 Codex 插件与技能 | `plugin`/`skill` 过滤，`limit` 1-200 |
-| `codex_port` | 批量移植为 DSH 技能 | `plugins`/`skills` 过滤，`targetDir`，`overwrite` |
+| `codex_port` | 批量移植为 DSH 技能 | `plugins`/`skills` 过滤，`targetDir`，`overwrite`，`dryRun` |
 | `codex_status` | 对比源与目标：已移植/未移植统计 | 无 |
+| `codex_health` | 自检 Codex 主目录、插件目录、目标目录可写性与可发现技能数 | `codexHome`（可选） |
 
 ### 示例
 

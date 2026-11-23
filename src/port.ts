@@ -67,6 +67,12 @@ function isWithin(root: string, path: string): boolean {
   return child !== '' && child !== '..' && !child.startsWith('..' + sep) && !isAbsolute(child)
 }
 
+function sameFilePath(a: string, b: string): boolean {
+  const normA = resolve(a)
+  const normB = resolve(b)
+  return process.platform === 'win32' ? normA.toLowerCase() === normB.toLowerCase() : normA === normB
+}
+
 function errorText(error: unknown): string {
   return error instanceof Error ? error.message : String(error)
 }
@@ -185,7 +191,7 @@ export function portSkill(skill: CodexSkillSource, plugin: CodexPluginInfo, targ
     const describePolicies = (converted: string) => {
       const metadata = parseSkillFile(converted).frontmatter
       policyChanges = [metadata['disable-model-invocation'] === true ? '保留仅显式手动调用，模型不能自动调用' : '', metadata['user-invocable'] === false ? '保留不可由用户直接调用的限制' : '',
-        collision && collision !== target ? '原同名文件保留，新安装可能遮蔽它：' + collision : '',
+        collision && !sameFilePath(collision, join(target, 'SKILL.md')) ? '原同名文件保留，新安装可能遮蔽它：' + collision : '',
         typeof metadata.license === 'string' && metadata.license !== plugin.license ? '保留技能自身的 license：' + metadata.license : '',
       ].filter(Boolean)
       policyNote = policyChanges.length ? '；' + policyChanges.join('；') : ''

@@ -1,5 +1,12 @@
 # 更新记录
 
+## 0.4.22 (2026-11-23)
+
+- 修复 `portSkill` 在 `overwrite: true` 替换已有标准目录技能时因路径比较口径错误误报“原同名文件保留，新安装可能遮蔽它”的问题，平铺 `.md` 与异名目录碰撞仍保留提醒。
+- 修复 `codex_port` 在配置 `config.overwrite: true` 时单次显式传入 `overwrite: false` 未生效的问题。
+- 清理未使用的 `asRecord` 与过期源码注释，补齐 `docs/USAGE` 中的 `codex_health`、`dryRun` 与英文版跨平台章节，并修正 `docs/REFERENCE` 语言链接与更新策略文案。
+- Fix false shadowing warnings when overwriting standard directory skills, honor explicit `overwrite: false` over `config.overwrite: true`, remove dead code/stale comments, and align bilingual `USAGE` and `REFERENCE` docs.
+
 ## 0.4.21 (2026-11-20)
 
 - 升级共享更新组件至 0.2.10，移除跨插件右下角浮动提醒，保留工作台及插件详情页更新控制。

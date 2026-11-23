@@ -63,6 +63,17 @@ test('codex_port：skills 过滤 + targetDir 覆盖 + overwrite', async () => {
   removeTestDir(other)
 })
 
+test('codex_port：config.overwrite=true 时，显式传入 overwrite=false 仍可跳过覆写', async () => {
+  const cfgOverwrite = resolveConfig({ codexHome: home, targetDir: target, overwrite: true })
+  const port = buildCodexPortTools(cfgOverwrite).find((t) => t.name === 'codex_port')
+  const skipped = await port.execute({ overwrite: false })
+  assert.equal(skipped.counts.skipped, 2)
+  assert.equal(skipped.counts.ported, 0)
+  const overwritten = await port.execute({})
+  assert.equal(overwritten.counts.ported, 2)
+  assert.equal(overwritten.counts.skipped, 0)
+})
+
 test('codex_status：已移植统计', async () => {
   const status = buildCodexPortTools(cfg).find((t) => t.name === 'codex_status')
   const value = await status.execute({})

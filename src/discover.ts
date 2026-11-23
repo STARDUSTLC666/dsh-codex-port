@@ -29,10 +29,6 @@ export interface CodexPluginInfo {
   skills: CodexSkillSource[]
 }
 
-function asRecord(value: unknown): Record<string, unknown> {
-  return typeof value === 'object' && value !== null ? value as Record<string, unknown> : {}
-}
-
 function isDir(path: string): boolean {
   try { return statSync(path).isDirectory() } catch { return false }
 }
@@ -122,7 +118,7 @@ function enumerateSkills(pluginDir: string): CodexSkillSource[] {
 /**
  * 发现所有 Codex 插件。
  * 顺序：解包目录（.tmp/plugins/plugins/*）优先，缓存目录（plugins/cache/**）其次；
- * 同名插件按 版本最新 > 目录修改时间 去重。
+ * 同名插件按来源优先级或更新语义化版本去重。
  */
 export function discoverPlugins(codexHome: string): CodexPluginInfo[] {
   const found = new Map<string, { manifest: NonNullable<ReturnType<typeof readPluginManifest>>; dir: string; priority: number }>()

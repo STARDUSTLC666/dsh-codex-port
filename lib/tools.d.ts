@@ -21,7 +21,7 @@ export interface CodexPortToolDefinition {
     execute(args: unknown, exec: unknown): Promise<unknown>;
 }
 /**
- * 构建三个工具定义。
+ * 构建四个工具定义。
  */
 export interface CodexPortDependencies {
     existingSkillNames?(options: {

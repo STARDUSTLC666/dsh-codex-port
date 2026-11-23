@@ -41,6 +41,30 @@ test('portSkill：overwrite=true 覆盖', () => {
   assert.ok(converted.includes('# Video Best'))
 })
 
+test('portSkill：overwrite=true 替换已有标准目录技能时不误报遮蔽警告，平铺同名文件仍报警告', () => {
+  const plugins = discoverPlugins(home)
+  const remotion = plugins.find((p) => p.name === 'remotion-fixture')
+  // 此时 target/video-best/SKILL.md 是合法的标准目录技能（含完整 frontmatter）
+  const preview = portSkill(remotion.skills[0], remotion, target, true, true)
+  assert.equal(preview.status, 'planned')
+  assert.doesNotMatch(preview.reason, /原同名文件保留/)
+  const replaced = portSkill(remotion.skills[0], remotion, target, true, false)
+  assert.equal(replaced.status, 'ported')
+  assert.doesNotMatch(replaced.reason, /原同名文件保留/)
+  assert.equal(replaced.policyChanges?.some((c) => c.includes('原同名文件保留')) ?? false, false)
+
+  // 平铺同名 .md 文件不会被 target 目录替换，overwrite=true 时应保留遮蔽警告
+  const flatTarget = makeTestDir('dsh-codex-port-flat-')
+  try {
+    writeFileSync(join(flatTarget, 'video-best.md'), '---\nname: video-best\ndescription: Existing flat skill\n---\nBody\n', 'utf8')
+    const shadowResult = portSkill(remotion.skills[0], remotion, flatTarget, true, false)
+    assert.equal(shadowResult.status, 'ported')
+    assert.match(shadowResult.reason, /原同名文件保留/)
+  } finally {
+    removeTestDir(flatTarget)
+  }
+})
+
 test('portSkill：非法技能名标记 failed', () => {
   const fake = {
     skillDirName: 'bad..name', skillName: '..', description: '',

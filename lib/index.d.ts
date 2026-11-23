@@ -1,8 +1,8 @@
 /**
  * dsh-codex-port —— Codex 插件 → DSH 技能移植工具插件（node 半身）。
  *
- * 插件导出 apply(ctx, config)：注册三个面向模型的工具（codex_list / codex_port /
- * codex_status），扫描 ~/.codex 的解包插件与缓存，把官方 Codex 插件技能批量移植为
+ * 插件导出 apply(ctx, config)：注册四个面向模型的工具（codex_list / codex_port /
+ * codex_status / codex_health），扫描 ~/.codex 的解包插件与缓存，把官方 Codex 插件技能批量移植为
  * DSH 技能。纯文件系统操作，仅依赖 YAML 解析库。
  *
  * @module dsh-codex-port
@@ -34,7 +34,7 @@ export interface CodexPortPluginContext {
     on?(event: string, listener: () => void): () => void;
 }
 /**
- * 插件入口：解析配置并注册三个移植工具。
+ * 插件入口：解析配置并注册四个移植与自检工具。
  */
 export declare function apply(ctx: CodexPortPluginContext, config?: CodexPortConfig | null): void;
 export * from './config.js';

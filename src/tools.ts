@@ -1,5 +1,5 @@
 /**
- * 三个面向模型的移植工具：codex_list / codex_port / codex_status。
+ * 四个面向模型的移植与自检工具：codex_list / codex_port / codex_status / codex_health。
  *
  * @module dsh-codex-port/tools
  */
@@ -129,7 +129,7 @@ const statusSchema = {
 }
 
 /**
- * 构建三个工具定义。
+ * 构建四个工具定义。
  */
 export interface CodexPortDependencies {
   existingSkillNames?(options: { cwd: string; scope?: unknown; signal?: AbortSignal }): Promise<readonly string[]>
@@ -263,7 +263,7 @@ export function buildCodexPortTools(config: ResolvedCodexPortConfig, dependencie
       const targetRaw = optionalString(args, 'targetDir')
       const cwd = (exec as { agent?: { session?: { header?: { cwd?: string } } } } | undefined)?.agent?.session?.header?.cwd || process.cwd()
       const targetDir = resolve(cwd, targetRaw ?? config.targetDir)
-      const overwrite = args.overwrite === true ? true : config.overwrite
+      const overwrite = typeof args.overwrite === 'boolean' ? args.overwrite : config.overwrite
       const dryRun = args.dryRun === true
       const selected: Array<{ plugin: CodexPluginInfo; skills: CodexPluginInfo['skills'] }> = []
       for (const plugin of plugins) {

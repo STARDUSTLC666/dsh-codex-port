@@ -44,8 +44,9 @@ Everything is optional; defaults just work:
 | Tool | Purpose | Key parameters |
 | :-- | :-- | :-- |
 | `codex_list` | List discovered Codex plugins and skills | `plugin`/`skill` filters, `limit` 1-200 |
-| `codex_port` | Batch-port skills into DSH | `plugins`/`skills` filters, `targetDir`, `overwrite` |
+| `codex_port` | Batch-port skills into DSH | `plugins`/`skills` filters, `targetDir`, `overwrite`, `dryRun` |
 | `codex_status` | Compare source vs target: ported/missing counts | none |
+| `codex_health` | Diagnose Codex home, plugin directory, target writability, and discoverable skill count | `codexHome` (optional) |
 
 ### Examples
 
@@ -59,6 +60,21 @@ codex_status {}                        # how many are left?
 ```
 
 Ported skills are immediately usable from the DSH skills directory; the agent triggers them by their descriptions.
+
+## Cross-platform usage
+
+`targetDir` is not limited to DSH: point it at the skills directory of any agent that supports the Agent Skills (`SKILL.md`) format to port Codex plugin skills there as well:
+
+| Agent | Suggested `targetDir` |
+| :-- | :-- |
+| DSH | `~/.dsh/skills` (default) |
+| Claude Code | `~/.claude/skills/` |
+| Cursor | `.cursor/skills/` |
+| Gemini CLI | `~/.gemini/skills/` |
+
+```text
+codex_port { targetDir: ~/.claude/skills }
+```
 
 ## Porting rules
 
