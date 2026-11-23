@@ -2,13 +2,13 @@
 
 # Codex Port
 
-**把常用 Codex 技能带到 DSH。**
+> **安全预览并一键将常用 Codex 技能移植到 DeepSeek Harness。**
 
-DeepSeek Harness（`>=0.2.2-rc.3`）Codex 技能移植插件：支持发现本机 Codex 技能、预览目标路径与重名冲突、保留调用策略与许可说明，并适配 Windows 路径与 Cordis 热重载清理。
+DeepSeek Harness（`>=0.2.2-rc.3`）Codex 技能移植插件：离线发现本机技能、先预览目标路径与同名冲突再按需导入，完整保留调用策略与许可说明，并原生适配 Windows 路径。
 
 [![npm](https://img.shields.io/npm/v/dsh-codex-port)](https://www.npmjs.com/package/dsh-codex-port) [![downloads](https://raw.githubusercontent.com/STARDUSTLC666/dsh-suite/npm-downloads/assets/dsh-codex-port-downloads.svg)](https://www.npmjs.com/package/dsh-codex-port) [![total downloads](https://raw.githubusercontent.com/STARDUSTLC666/dsh-suite/npm-downloads/assets/dsh-codex-port-total-downloads.svg)](https://www.npmjs.com/package/dsh-codex-port)
 
-**[安装使用](#安装) · [使用流程](#开始使用) · [完整说明](https://github.com/STARDUSTLC666/dsh-codex-port/blob/master/docs/REFERENCE.zh.md)**
+**[核心能力](#核心能力) · [安装](#安装) · [快速上手](#开始使用) · [完整说明](https://github.com/STARDUSTLC666/dsh-codex-port/blob/master/docs/REFERENCE.zh.md)**
 
 <picture>
   <source media="(prefers-color-scheme: dark) and (max-width: 640px)" srcset="https://raw.githubusercontent.com/STARDUSTLC666/dsh-codex-port/master/docs/assets/intro/workflow-zh-mobile-dark.svg">
@@ -17,52 +17,48 @@ DeepSeek Harness（`>=0.2.2-rc.3`）Codex 技能移植插件：支持发现本�
   <img src="https://raw.githubusercontent.com/STARDUSTLC666/dsh-codex-port/master/docs/assets/intro/workflow-zh-light.svg" alt="把常用 Codex 技能带到 DSH。 · 流程示意" width="100%">
 </picture>
 
-## 功能
+## 核心能力
 
-- 查看可移植技能、依赖与许可。
-- 先看目标目录和重名处理，再决定导入。
-- 只导入需要的技能，并查看迁移结果。
+| 能力 | 说明 |
+| :--- | :--- |
+| **本地发现与盘点** | 扫描本机 Codex 技能清单，列出各自依赖与许可说明，不擅自复制 |
+| **导入预览与冲突检查** | 写入前先核对目标目录与同名冲突处理方案，原技能目录保持不变 |
+| **策略与许可保留** | 迁移时完整保留原调用策略与许可文件，适配 Windows 路径与 Cordis 热重载清理 |
 
 ## 安装
 
-在 DSH 桌面版「插件」面板安装 `dsh-codex-port`。已配置命令行时也可使用：
+在 DSH 桌面版「插件」面板安装 `dsh-codex-port`，或使用命令行：
 
 ```bash
 dsh plugin --profile desktop add dsh-codex-port
 ```
 
-网页版把 `desktop` 改为 `web`；安装后重启对应的 DSH。宿主要求以包声明 `>=0.2.2-rc.3` 为准。
+网页版将 `desktop` 改为 `web`，安装后重启 DSH。宿主要求：`>=0.2.2-rc.3`。
 
 ## 开始使用
 
-1. 在目标 DSH 工作区开始会话，指出本地 Codex 技能所在位置。
-2. 先让助手列出可移植技能、依赖和许可说明，不要直接全部复制。
-3. 选择需要的技能，核对导入预览、目标目录与重名冲突后再执行导入。
-4. 在 DSH 中调用一个导入技能验证效果；原技能保持不变，后续按需要重新检查或更新。
+1. **指定来源目录**：在目标 DSH 工作区开启会话，告知本地 Codex 技能位置。
+2. **先列出清单与许可**：让助手先列出可移植技能、外部依赖与许可说明，不直接整批复制。
+3. **预览冲突再导入**：选中需要的技能，核对目标目录与同名冲突后再确认导入。
+4. **调用验证**：在 DSH 中实际触发一个已导入技能核对效果，原 Codex 目录不受影响。
 
-可以这样说：
+### 常用对话示例
 
 > 先列出本机可移植的技能，预览目标目录和重名冲突，暂不导入。
 
 ## 开始前要知道
 
-技能需要的运行环境与第三方依赖仍需单独准备。
-
-配置、完整工具与排错见[详细使用说明](https://github.com/STARDUSTLC666/dsh-codex-port/blob/master/docs/REFERENCE.zh.md)。
+- 技能自身所需的语言运行时与第三方依赖仍需在本机单独准备。
+- 详细配置、工具与排错见 [完整说明](https://github.com/STARDUSTLC666/dsh-codex-port/blob/master/docs/REFERENCE.zh.md)。
 
 ## 插件更新
 
-在工作台或原生插件详情页底部检查更新。默认自动检查，**默认不自动安装**；是否安装、何时重启由你决定。Suite 管理的组件随整包更新。[查看更新规则](https://github.com/STARDUSTLC666/dsh-codex-port/blob/master/docs/REFERENCE.zh.md)。
+在原生插件详情页底部检查更新。默认自动检查，**默认不自动安装**；Suite 管理的组件随整包更新。
 
-## 文档
+## 文档与反馈
 
-- [详细使用、配置与边界](https://github.com/STARDUSTLC666/dsh-codex-port/blob/master/docs/REFERENCE.zh.md)
-- [更新记录](https://github.com/STARDUSTLC666/dsh-codex-port/blob/master/CHANGELOG.md)
-- [验证范围与历史](https://github.com/STARDUSTLC666/dsh-codex-port/blob/master/docs/VALIDATION.md)
-
-## 反馈与贡献
-
-如果插件帮到了你，欢迎 Star，让更多人发现它。问题和建议请提交 [Issues](https://github.com/STARDUSTLC666/dsh-codex-port/issues)，也欢迎代码与文档 [PR](https://github.com/STARDUSTLC666/dsh-codex-port/pulls)。反馈时附上版本与复现步骤，并移除凭据。
+- [完整使用、配置与边界](https://github.com/STARDUSTLC666/dsh-codex-port/blob/master/docs/REFERENCE.zh.md) · [更新记录](https://github.com/STARDUSTLC666/dsh-codex-port/blob/master/CHANGELOG.md) · [验证历史](https://github.com/STARDUSTLC666/dsh-codex-port/blob/master/docs/VALIDATION.md)
+- 欢迎 Star、提交 [Issues](https://github.com/STARDUSTLC666/dsh-codex-port/issues) 与 [PR](https://github.com/STARDUSTLC666/dsh-codex-port/pulls)（反馈请附版本与复现步骤，并移除凭据）。
 
 ## License
 
