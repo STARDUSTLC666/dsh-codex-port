@@ -1,5 +1,11 @@
 # 更新记录
 
+## 0.4.23 (2026-11-25)
+
+- 为技能发现的 `SKILL.md` frontmatter 增加 64 KiB 读取上限；缺少结束标记或元数据超限时保留目录名回退，避免大文件阻塞发现或造成无界分配。
+- 验证：完整构建与 75 项测试通过，覆盖跨块 UTF-8、元数据解析和超限读取边界。
+- Bound skill frontmatter discovery to 64 KiB, retain directory-name fallback for oversized headers, and pass all 75 tests.
+
 ## 0.4.22 (2026-11-23)
 
 - 修复 `portSkill` 在 `overwrite: true` 替换已有标准目录技能时因路径比较口径错误误报“原同名文件保留，新安装可能遮蔽它”的问题，平铺 `.md` 与异名目录碰撞仍保留提醒。
