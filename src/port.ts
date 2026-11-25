@@ -21,6 +21,8 @@ export interface PortResult {
 const EXCLUDED_DIRS = new Set(['agents'])
 // Matches Harness skill.isSkillName; keep the public filename sanitizer unchanged.
 const DSH_SKILL_NAME = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
+const MAX_SKILL_FILES = 4096
+const MAX_SKILL_BYTES = 64 * 1024 * 1024
 
 /** Check host identities, including flat .md files and differently named folders. */
 export function findInstalledSkill(targetDir: string, name: string): string | undefined {
@@ -122,7 +124,7 @@ class InstallRoot {
 }
 
 /** Copy only regular files/directories; the destination is a new private staging tree. */
-function copyTree(source: string, target: string, sourceRoot: string, root: InstallRoot): number {
+function copyTree(source: string, target: string, sourceRoot: string, root: InstallRoot, budget = { files: 0, bytes: 0 }): number {
   if (source !== sourceRoot && !isWithin(sourceRoot, fs.realpathSync(source))) throw new Error('技能源目录越界')
   if (fs.lstatSync(source).isSymbolicLink()) throw new Error('技能源目录不能是符号链接')
   fs.mkdirSync(root.check(target))
@@ -134,9 +136,17 @@ function copyTree(source: string, target: string, sourceRoot: string, root: Inst
     if (stat.isSymbolicLink()) continue
     if (stat.isDirectory() && EXCLUDED_DIRS.has(entry.name)) continue
     if (!isWithin(sourceRoot, fs.realpathSync(from))) throw new Error('技能源文件解析后越界：' + from)
-    if (stat.isDirectory()) count += copyTree(from, to, sourceRoot, root)
+    if (stat.isDirectory()) count += copyTree(from, to, sourceRoot, root, budget)
     else if (stat.isFile()) {
+      if (budget.files >= MAX_SKILL_FILES) throw new Error('技能文件数量超过 4096 个上限，未替换现有安装。')
+      if (stat.size > MAX_SKILL_BYTES - budget.bytes) throw new Error('技能目录总大小超过 64 MiB 上限，未替换现有安装。')
       fs.copyFileSync(from, to, fs.constants.COPYFILE_EXCL)
+      const copied = fs.lstatSync(to)
+      if (!copied.isFile() || copied.size !== stat.size || copied.size > MAX_SKILL_BYTES - budget.bytes) {
+        throw new Error('技能文件在复制期间发生变化，或技能目录超过 64 MiB 上限，未替换现有安装。')
+      }
+      budget.files += 1
+      budget.bytes += copied.size
       count += 1
     } else throw new Error('技能目录含非普通文件：' + from)
   }
@@ -183,6 +193,7 @@ export function portSkill(skill: CodexSkillSource, plugin: CodexPluginInfo, targ
     }
     const skillInfo = fs.lstatSync(join(source, 'SKILL.md'))
     if (!skillInfo.isFile() || skillInfo.isSymbolicLink()) throw new Error('SKILL.md 必须是普通文件，不能是符号链接。')
+    if (skillInfo.size > MAX_SKILL_BYTES) throw new Error('SKILL.md 超过 64 MiB 上限，未替换现有安装。')
     const policy = invocationPolicy(source)
     const convert = (text: string) => convertSkillFile(text, {
       pluginName: plugin.name, homepage: plugin.homepage, license: plugin.license,
@@ -210,9 +221,15 @@ export function portSkill(skill: CodexSkillSource, plugin: CodexPluginInfo, targ
     incoming = root.check(join(transaction, 'incoming'))
     previous = root.check(join(transaction, 'previous'))
     record('preparing')
-    const files = copyTree(source, incoming, source, root)
+    const budget = { files: 0, bytes: 0 }
+    const files = copyTree(source, incoming, source, root, budget)
     const skillFile = root.check(join(incoming, 'SKILL.md'))
     const converted = convert(fs.readFileSync(skillFile, 'utf8'))
+    const originalSkillBytes = fs.lstatSync(skillFile).size
+    const convertedSkillBytes = Buffer.byteLength(converted)
+    if (budget.bytes - originalSkillBytes + convertedSkillBytes > MAX_SKILL_BYTES) {
+      throw new Error('转换后的技能目录总大小超过 64 MiB 上限，未替换现有安装。')
+    }
     describePolicies(converted)
     fs.writeFileSync(skillFile, converted, 'utf8')
     // Validate the bytes that were actually written, before moving the old skill.

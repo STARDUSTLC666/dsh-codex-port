@@ -54,6 +54,28 @@ test('复制中途失败：原技能每个文件不变，未进行目录切换',
   assert.equal(recovery(f).phase, 'failed-before-switch')
 })
 
+test('技能总字节数超限时不替换旧安装', t => {
+  const f = fixture(t)
+  const large = join(f.source, 'oversized.bin')
+  const descriptor = fs.openSync(large, 'w')
+  try { fs.ftruncateSync(descriptor, 64 * 1024 * 1024 + 1) } finally { fs.closeSync(descriptor) }
+  const result = f.run()
+  assert.equal(result.status, 'failed')
+  assert.match(result.reason, /64 MiB 上限/)
+  oldIntact(f.target)
+  assert.equal(fs.existsSync(recovery(f).previous), false)
+})
+
+test('技能文件数超限时不替换旧安装', t => {
+  const f = fixture(t)
+  for (let index = 0; index < 4095; index++) fs.writeFileSync(join(f.source, 'extra-' + index + '.txt'), '')
+  const result = f.run()
+  assert.equal(result.status, 'failed')
+  assert.match(result.reason, /4096 个上限/)
+  oldIntact(f.target)
+  assert.equal(fs.existsSync(recovery(f).previous), false)
+})
+
 test('转换后文件写入失败：旧技能保持不变', t => {
   const f = fixture(t)
   const write = fs.writeFileSync

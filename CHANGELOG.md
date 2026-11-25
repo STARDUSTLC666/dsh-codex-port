@@ -1,5 +1,11 @@
 # 更新记录
 
+## 0.4.24 (2026-11-25)
+
+- 技能安装限制为 4096 个文件、64 MiB，超限或复制失败时保留已有安装。
+- Limit skill installation to 4096 files and 64 MiB while preserving the prior installation on failure.
+
+
 ## 0.4.23 (2026-11-25)
 
 - 为技能发现的 `SKILL.md` frontmatter 增加 64 KiB 读取上限；缺少结束标记或元数据超限时保留目录名回退，避免大文件阻塞发现或造成无界分配。
