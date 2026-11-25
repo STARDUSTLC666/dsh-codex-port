@@ -75,12 +75,15 @@ function readPluginManifest(pluginDir: string): { name: string; version: string;
 function skillMetadata(file: string): string {
   const descriptor = openSync(file, 'r'), decoder = new StringDecoder('utf8')
   const buffer = Buffer.allocUnsafe(16 * 1024)
+  const maxBytes = 64 * 1024
   let text = ''
+  let bytesRead = 0
   let searchFrom = 4
   try {
     for (;;) {
-      const count = readSync(descriptor, buffer)
+      const count = readSync(descriptor, buffer, 0, Math.min(buffer.length, maxBytes - bytesRead), null)
       if (!count) return text + decoder.end()
+      bytesRead += count
       text += decoder.write(buffer.subarray(0, count))
       // Discovery uses only frontmatter. Stop before allocating a large body,
       // preserving the same parser and allowing headers across chunk boundaries.
@@ -88,6 +91,7 @@ function skillMetadata(file: string): string {
       if (!/^---\r?\n/.test(text)) return text
       const end = text.indexOf('\n---', searchFrom)
       if (end >= 0) return text.slice(0, end + 4) + '\n'
+      if (bytesRead >= maxBytes) throw new Error('SKILL.md frontmatter 超过 64 KiB')
       searchFrom = Math.max(4, text.length - 3)
     }
   } finally { closeSync(descriptor) }
