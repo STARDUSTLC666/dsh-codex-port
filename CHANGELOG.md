@@ -1,5 +1,10 @@
 # 更新记录
 
+## 0.4.25 (2026-11-28)
+
+- 更新详情页现在会保留较新检查的结果，慢轮询返回时不再把版本或任务状态退回旧值。
+- Keep newer update-check results and job status when an older background request finishes later.
+
 ## 0.4.24 (2026-11-25)
 
 - 技能安装限制为 4096 个文件、64 MiB，超限或复制失败时保留已有安装。
